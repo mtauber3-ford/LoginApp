@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.navigation.findNavController
 import androidx.databinding.DataBindingUtil
 import mtaubert.loginapplication.databinding.FragmentLoginBinding
@@ -27,6 +26,9 @@ class LoginFragment : Fragment() {
         //The complete onClickListener with Navigation
         binding.signUpButton.setOnClickListener { view : View ->
             view.findNavController().navigate(R.id.action_loginFragment_to_signUpFragment)
+        }
+        binding.loginButton.setOnClickListener { view : View ->
+            view.findNavController().navigate(R.id.action_loginFragment_to_accountFragment)
         }
         return binding.root
 
