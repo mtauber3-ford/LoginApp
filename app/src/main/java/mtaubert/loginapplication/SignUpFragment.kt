@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
+import mtaubert.loginapplication.Model.User
 import mtaubert.loginapplication.databinding.FragmentSignUpBinding
 
 class SignUpFragment : Fragment() {
@@ -36,7 +37,7 @@ class SignUpFragment : Fragment() {
             return false
         }
 
-        if(!email.contains("@") || !email.contains(".")) {
+        if(!email.contains("@") || !email.contains(".") || email.contains(" ")) {
             Toast.makeText(activity, "Your email is not a valid email!", Toast.LENGTH_LONG).show()
             return false
         }
@@ -44,10 +45,22 @@ class SignUpFragment : Fragment() {
         if(password.length <= 7) {
             Toast.makeText(activity, "Your password must be at least 8 characters long!", Toast.LENGTH_LONG).show()
             return false
-        }else if (password.contains(Regex("([A-Za-z0-9!@#$%&])"))) {
-            return true
+        }else if (password.contains(Regex("[^A-Za-z0-9!@#$&]"))) {
+            return false
         }
-        Toast.makeText(activity, "Your password can only contain letters, numbers and these symbols: !@#$&", Toast.LENGTH_LONG).show()
-        return false
+
+        val user = User()
+        user.name = name
+        user.email = email
+        user.password = password
+
+        if((activity as LoginActivity).db.doesUserExist(user)) {
+            Toast.makeText(activity, "Your email is already registered!", Toast.LENGTH_LONG).show()
+            return false
+        }
+
+        (activity as LoginActivity).db.addPerson(user)
+        (activity as LoginActivity).currentUser = user
+        return true
     }
 }

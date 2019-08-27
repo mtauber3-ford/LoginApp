@@ -9,13 +9,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.findNavController
 import androidx.databinding.DataBindingUtil
-import kotlinx.android.synthetic.main.fragment_login.view.*
+import mtaubert.loginapplication.DBHelper.DBHelper
 import mtaubert.loginapplication.databinding.FragmentLoginBinding
 
 
 
 
 class LoginFragment : Fragment() {
+
+    private lateinit var db:DBHelper
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,11 +38,15 @@ class LoginFragment : Fragment() {
                 Toast.makeText(getActivity(), "Username and/or password incorrect", Toast.LENGTH_LONG).show()
             }
         }
+
+        db = (activity as LoginActivity).db
         return binding.root
     }
 
     private fun loginValidation(username:String, password:String): Boolean {
-        if(username == "test" && password == "pass") {
+        val loggedInUser = db.validateLogin(username,password)
+        if(loggedInUser != null) {
+            (activity as LoginActivity).currentUser = loggedInUser
             return true
         }
         return false

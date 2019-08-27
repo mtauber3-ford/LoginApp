@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">Login Application</string>
     <string name="login">Login</string>
-    <string name="username">Username</string>
+    <string name="logout">Logout</string>
+    <string name="username">E-Mail</string>
     <string name="password">Password</string>
     <string name="sign_up">Sign Up</string>
     <string name="sign_up_name">Enter your first name</string>

@@ -10,33 +10,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
-                android:text="@string/sign_up_name"
                 android:ems="10"
                 android:id="@+id/name_entry" android:layout_marginBottom="24dp"
                 app:layout_constraintBottom_toTopOf="@+id/email_entry"
                 app:layout_constraintEnd_toEndOf="@+id/email_entry"
-                app:layout_constraintStart_toStartOf="@+id/email_entry"/>
+                app:layout_constraintStart_toStartOf="@+id/email_entry" android:hint="@string/sign_up_name"/>
         <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
-                android:text="@string/sign_up_email"
                 android:ems="10"
                 android:id="@+id/email_entry" android:layout_marginBottom="24dp"
                 app:layout_constraintBottom_toTopOf="@+id/password_entry"
                 app:layout_constraintEnd_toEndOf="@+id/password_entry"
-                app:layout_constraintStart_toStartOf="@+id/password_entry"/>
+                app:layout_constraintStart_toStartOf="@+id/password_entry" android:hint="@string/sign_up_email"/>
         <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
-                android:text="@string/sign_up_password"
                 android:ems="10"
                 android:id="@+id/password_entry" android:layout_marginTop="24dp"
                 app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="24dp"
                 app:layout_constraintBottom_toBottomOf="parent" android:layout_marginEnd="24dp"
                 app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="24dp"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent" android:hint="@string/sign_up_password"/>
         <Button
                 android:text="@string/sign_up"
                 android:layout_width="wrap_content"
