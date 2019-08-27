@@ -2,10 +2,8 @@ package mtaubert.loginapplication
 
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.findNavController
 import androidx.databinding.DataBindingUtil
@@ -40,7 +38,23 @@ class LoginFragment : Fragment() {
         }
 
         db = (activity as LoginActivity).db
+
+        setHasOptionsMenu(true)
+
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater?.inflate(R.menu.admin_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.admin -> view?.findNavController()?.navigate(R.id.action_loginFragment_to_adminFragment)
+            else -> return super.onOptionsItemSelected(item)
+        }
+        return true
     }
 
     private fun loginValidation(username:String, password:String): Boolean {
