@@ -29,7 +29,10 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         onCreate(db)
     }
 
-    val allUser: List<User>
+    /**
+    List of all users in the DB
+     */
+    val allUser: ArrayList<User>
         get() {
             var listUser = ArrayList<User>()
             val selectQuery = "SELECT * FROM $TABLE_NAME"
@@ -49,7 +52,10 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
             return listUser
         }
 
-    fun addPerson(user: User) {
+    /**
+    Add a user to the DB
+     */
+    fun addUser(user: User) {
         val db = this.writableDatabase
         val values = ContentValues()
         values.put(COL_NAME, user.name)
@@ -59,17 +65,35 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         db.insert(TABLE_NAME, null, values)
     }
 
+    /**
+    Remove a user from the DB
+     */
+    fun removeUsers(users: ArrayList<User>) {
+        val db = this.writableDatabase
+        for(user:User in users) {
+            val selectQuery = "DELETE FROM $TABLE_NAME WHERE $COL_EMAIL='${user.email}'"
+            db.execSQL(selectQuery)
+        }
+        db.close()
+    }
+
+    /**
+    Returns true if there is an entry matching the email already in the DB
+     */
     fun doesUserExist(user: User):Boolean {
-        val db = this.readableDatabase
+        val db = this.writableDatabase
         val selectQuery = "SELECT * FROM $TABLE_NAME WHERE $COL_EMAIL='${user.email}'"
         val cursor = db.rawQuery(selectQuery, null)
-        if(cursor.columnCount > 0) {
+        if(cursor.count > 0) {
             return true
         }
         cursor.close()
         return false
     }
 
+    /**
+    Checks user email and password inputs and returns the user data if correct, else returns null
+     */
     fun validateLogin(email: String, password: String): User? {
         var user: User? = null
         val db = this.readableDatabase

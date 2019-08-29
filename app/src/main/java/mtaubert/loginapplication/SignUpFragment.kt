@@ -59,7 +59,7 @@ class SignUpFragment : Fragment() {
             return false
         }
 
-        (activity as LoginActivity).db.addPerson(user)
+        (activity as LoginActivity).db.addUser(user)
         (activity as LoginActivity).currentUser = user
         return true
     }

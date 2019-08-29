@@ -25,14 +25,17 @@ class LoginFragment : Fragment() {
 
         val binding = DataBindingUtil.inflate<FragmentLoginBinding>(inflater,
             R.layout.fragment_login,container,false)
-        //The complete onClickListener with Navigation
+
+        //Sign up button goes to the sign up fragments
         binding.signUpButton.setOnClickListener { view : View ->
             view.findNavController().navigate(R.id.action_loginFragment_to_signUpFragment)
         }
+
+        //Checks if the login credentials are valid and goes to the account fragment
         binding.loginButton.setOnClickListener { view : View ->
             if(loginValidation(binding.usernameInput.text.toString(), binding.passwordInput.text.toString())) {
                 view.findNavController().navigate(R.id.action_loginFragment_to_accountFragment)
-            } else {
+            } else { //Incorrect details give a popup warning
                 Toast.makeText(getActivity(), "Username and/or password incorrect", Toast.LENGTH_LONG).show()
             }
         }
@@ -57,6 +60,9 @@ class LoginFragment : Fragment() {
         return true
     }
 
+    /**
+    Validates the login details and saves the current user if details are correct and a user is returned
+     */
     private fun loginValidation(username:String, password:String): Boolean {
         val loggedInUser = db.validateLogin(username,password)
         if(loggedInUser != null) {
