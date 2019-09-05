@@ -1,67 +1,80 @@
 package mtaubert.loginapplication
 
-import android.app.PendingIntent.getActivity
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.Button
 import android.widget.TextView
-import mtaubert.loginapplication.DBHelper.DBHelper
-import mtaubert.loginapplication.Model.User
+import androidx.lifecycle.LiveData
+import androidx.recyclerview.widget.RecyclerView
+import mtaubert.loginapplication.Data.User
 
-class ViewHolder(v: View) {
-    val tvEmail: TextView = v.findViewById(R.id.email_text)
-    val tvPassword: TextView = v.findViewById(R.id.password_text)
-    val tvName: TextView = v.findViewById(R.id.name_text)
-    //val btnDelete: Button = v.findViewById(R.id.delete_button)
-}
+class UserListAdapter internal constructor(context: Context) : RecyclerView.Adapter<UserListAdapter.UserViewHolder>() {
 
-class UserListAdapter(context: Context, private val resource: Int, private val entries: ArrayList<User>) :
-    ArrayAdapter<User>(context, resource) {
+    /**
+     * UserViewHolder
+     * Class for the user info view for the recylcer view
+     */
+    inner class UserViewHolder(userView: View): RecyclerView.ViewHolder(userView) {
+        val tvEmail: TextView = userView.findViewById(R.id.email_text)
+        val tvPassword: TextView = userView.findViewById(R.id.password_text)
+        val tvName: TextView = userView.findViewById(R.id.name_text)
+    }
 
+    private var usersList = emptyList<User>() //List of current users
     private val inflater = LayoutInflater.from(context)
     val selectedUsers = ArrayList<User>()
+    //val selectedUsers: LiveData<ArrayList<User()>>
 
-    override fun getCount(): Int {
-        return entries.size
+    /**
+     * Creates and returns a view holder for the list
+     */
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
+        val userView = inflater.inflate(R.layout.user_entry_item, parent, false)
+        return UserViewHolder(userView)
     }
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val view: View
-        val viewHolder: ViewHolder
+    /**
+     * Returns the number of items in the list
+     */
+    override fun getItemCount(): Int {
+        return usersList.size
+    }
 
-        if (convertView == null) {
-            view = inflater.inflate(resource, parent, false)
-            viewHolder = ViewHolder(view)
-            view.tag = viewHolder
-        } else {
-            view = convertView
-            viewHolder = view.tag as ViewHolder
+    /**
+     * Adds data from the database to the viewholder
+     */
+    override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
+        val current = usersList[position]
+        holder.tvEmail.text = current.email
+        holder.tvPassword.text = current.password
+        holder.tvName.text = current.name
+        holder.itemView.setOnLongClickListener {v:View ->
+            longPress(position, v)
+            true
         }
-
-        //val db = DBHelper(context)
-
-        val currentEntry = entries[position]
-        viewHolder.tvEmail.text = currentEntry.email
-        viewHolder.tvPassword.text = currentEntry.password
-        viewHolder.tvName.text = currentEntry.name
-
-        return view
+        holder.itemView.setBackgroundResource(R.color.unselected)
     }
 
-    override fun notifyDataSetChanged() {
-        super.notifyDataSetChanged()
+    /**
+     * Sets the list of users
+     */
+    internal fun setUsers(users: List<User>) {
+        this.usersList = users
+        notifyDataSetChanged()
     }
 
-    fun longPress(position: Int, v: View) {
+    /**
+     * Adds and removes users from the selected view
+     */
+    private fun longPress(position: Int, v: View) {
 
-        if(selectedUsers.contains(entries[position])) {
-            selectedUsers.remove(entries[position])
+        if(selectedUsers.contains(usersList[position])) {
+            selectedUsers.remove(usersList[position])
             v.setBackgroundResource(R.color.unselected)
         } else {
-            selectedUsers.add(entries[position])
+            selectedUsers.add(usersList[position])
             v.setBackgroundResource(R.color.selected)
         }
 

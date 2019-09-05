@@ -1,17 +1,25 @@
 package mtaubert.loginapplication.DataAccessObjects
 
-import androidx.lifecycle.LiveData
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import mtaubert.loginapplication.Data.User
 
+@Dao
 interface UserDAO {
-    @Query("SELECT * from User")
-    fun getAllUsers(): LiveData<List<User>>
+    @Query("SELECT * from Users_Table")
+    suspend fun getAllUsers(): List<User>
 
-    @Insert
-    suspend fun insert(user: User)
+    @Query("SELECT * FROM Users_Table WHERE email=:email")
+    suspend fun getUser(email: String): List<User>
 
-    @Query("DELETE FROM User")
-    fun deleteAllUsers()
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    suspend fun insert(vararg user: User)
+
+    @Update
+    suspend fun updateUser(vararg user:User)
+
+    @Delete
+    suspend fun deleteUser(vararg user:User)
+
+    @Query("DELETE FROM Users_Table")
+    suspend  fun deleteAllUsers()
 }

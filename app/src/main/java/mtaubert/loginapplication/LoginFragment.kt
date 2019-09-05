@@ -1,21 +1,20 @@
 package mtaubert.loginapplication
 
-
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.navigation.findNavController
 import androidx.databinding.DataBindingUtil
-import mtaubert.loginapplication.DBHelper.DBHelper
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import mtaubert.loginapplication.Data.User
+import mtaubert.loginapplication.RoomDatabase.UserRoomDatabase
 import mtaubert.loginapplication.databinding.FragmentLoginBinding
-
-
-
 
 class LoginFragment : Fragment() {
 
-    private lateinit var db:DBHelper
+    private lateinit var db:UserRoomDatabase
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,6 +25,8 @@ class LoginFragment : Fragment() {
         val binding = DataBindingUtil.inflate<FragmentLoginBinding>(inflater,
             R.layout.fragment_login,container,false)
 
+        db = (activity as LoginActivity).db
+
         //Sign up button goes to the sign up fragments
         binding.signUpButton.setOnClickListener { view : View ->
             view.findNavController().navigate(R.id.action_loginFragment_to_signUpFragment)
@@ -33,14 +34,10 @@ class LoginFragment : Fragment() {
 
         //Checks if the login credentials are valid and goes to the account fragment
         binding.loginButton.setOnClickListener { view : View ->
-            if(loginValidation(binding.usernameInput.text.toString(), binding.passwordInput.text.toString())) {
-                view.findNavController().navigate(R.id.action_loginFragment_to_accountFragment)
-            } else { //Incorrect details give a popup warning
-                Toast.makeText(getActivity(), "Username and/or password incorrect", Toast.LENGTH_LONG).show()
-            }
+            loginValidation(binding.usernameInput.text.toString(), binding.passwordInput.text.toString())
         }
 
-        db = (activity as LoginActivity).db
+        //db = (activity as LoginActivity).db
 
         setHasOptionsMenu(true)
 
@@ -63,12 +60,32 @@ class LoginFragment : Fragment() {
     /**
     Validates the login details and saves the current user if details are correct and a user is returned
      */
-    private fun loginValidation(username:String, password:String): Boolean {
-        val loggedInUser = db.validateLogin(username,password)
-        if(loggedInUser != null) {
-            (activity as LoginActivity).currentUser = loggedInUser
-            return true
+    private fun loginValidation(username:String, password:String) {
+        if(username != "" && password != "") {
+            GlobalScope.launch {
+                val listOfUsers = db.userDao().getUser(username)
+                if(listOfUsers.isNotEmpty()) {
+                    if(listOfUsers[0].password == password) {
+                        loginSuccess(listOfUsers[0])
+                    } else {
+                        loginFailure()
+                    }
+                } else {
+                    loginFailure()
+                }
+            }
+        } else {
+            Toast.makeText(activity, "Enter login credentials!", Toast.LENGTH_LONG).show()
         }
-        return false
+
+    }
+
+    private fun loginSuccess(user:User) {
+        (activity as LoginActivity).currentUser = user
+        view?.findNavController()?.navigate(R.id.action_loginFragment_to_accountFragment)
+    }
+
+    private fun loginFailure() {
+        activity?.runOnUiThread(Runnable { Toast.makeText(activity, "Username and/or password incorrect!", Toast.LENGTH_LONG).show() })
     }
 }

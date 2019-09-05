@@ -4,17 +4,19 @@
                                                        android:layout_height="match_parent"
                                                        tools:context=".LoginFragment"
                                                        android:id="@+id/constraintLayout">
+
         <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:ems="10"
-                android:id="@+id/username_input"
-                android:hint="@string/username"
-                android:layout_marginBottom="24dp"
-                app:layout_constraintBottom_toTopOf="@+id/password_input"
-                app:layout_constraintEnd_toEndOf="@+id/password_input"
-                app:layout_constraintStart_toStartOf="@+id/password_input"/>
+            android:id="@+id/username_input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:ems="10"
+            android:hint="@string/username"
+            android:inputType="textEmailAddress"
+            app:layout_constraintBottom_toTopOf="@+id/password_input"
+            app:layout_constraintEnd_toEndOf="@+id/password_input"
+            app:layout_constraintStart_toStartOf="@+id/password_input" />
+
         <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

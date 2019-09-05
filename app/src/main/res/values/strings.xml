@@ -2,14 +2,21 @@
     <string name="app_name">Login Application</string>
     <string name="login">Login</string>
     <string name="logout">Logout</string>
+    <string name="name">Name</string>
     <string name="username">E-Mail</string>
     <string name="password">Password</string>
     <string name="sign_up">Sign Up</string>
+    <string name="save_details">Save Details</string>
     <string name="sign_up_name">Enter your first name</string>
     <string name="sign_up_email">Enter your email</string>
     <string name="sign_up_password">Enter your password</string>
     <string name="delete">Delete</string>
     <string name="admin">Admin</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="welcome_message">Welcome back </string>
+    <string name="account_details">View Account Details</string>
+    <string name="TBA">TBA</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
