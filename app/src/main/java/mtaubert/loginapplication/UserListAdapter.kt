@@ -70,10 +70,10 @@ class UserListAdapter internal constructor(context: Context) : RecyclerView.Adap
      */
     private fun longPress(position: Int, v: View) {
 
-        if(selectedUsers.contains(usersList[position])) {
+        if(selectedUsers.contains(usersList[position])) { //Un-highlights
             selectedUsers.remove(usersList[position])
             v.setBackgroundResource(R.color.unselected)
-        } else {
+        } else { //Highlights
             selectedUsers.add(usersList[position])
             v.setBackgroundResource(R.color.selected)
         }

@@ -8,4 +8,20 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="CyberpunkLight" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/headerNormal</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="android:textColor">@color/textNormal</item>
+        <item name="android:textColorHint">@color/textNormal</item>
+        <item name="android:background">@color/backgroundNormal</item>
+    </style>
+
+    <style name="CyberpunkDark" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/headerDark</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="android:textColor">@color/textDark</item>
+        <item name="android:textColorHint">@color/textDark</item>
+        <item name="android:background">@color/backgroundDark</item>
+    </style>
+
 </resources>
