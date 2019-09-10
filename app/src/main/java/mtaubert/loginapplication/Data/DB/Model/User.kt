@@ -1,4 +1,4 @@
-package mtaubert.loginapplication.Data
+package mtaubert.loginapplication.Data.DB.Model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

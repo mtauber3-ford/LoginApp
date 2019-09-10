@@ -1,4 +1,4 @@
-package mtaubert.loginapplication.Fragments
+package mtaubert.loginapplication.Features.Login.Views
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,8 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import mtaubert.loginapplication.Activities.LoginActivity
-import mtaubert.loginapplication.Data.User
+import mtaubert.loginapplication.Data.DB.Model.User
 import mtaubert.loginapplication.R
 import mtaubert.loginapplication.databinding.FragmentSignUpBinding
 
@@ -59,7 +58,12 @@ class SignUpFragment : Fragment() {
             Toast.makeText(activity, "Your password can only contain letters, numbers or these symbols: !@#$&", Toast.LENGTH_LONG).show()
         }
 
-        val user = User(email, password, name) //Creates a new user object using the input
+        val user =
+            User(
+                email,
+                password,
+                name
+            ) //Creates a new user object using the input
 
 
         GlobalScope.launch {

@@ -1,4 +1,4 @@
-package mtaubert.loginapplication.Fragments
+package mtaubert.loginapplication.Features.Login.Views
 
 import android.os.Bundle
 import android.view.*
@@ -8,15 +8,14 @@ import androidx.navigation.findNavController
 import androidx.databinding.DataBindingUtil
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import mtaubert.loginapplication.Activities.LoginActivity
-import mtaubert.loginapplication.Data.User
+import mtaubert.loginapplication.Data.DB.Model.User
 import mtaubert.loginapplication.R
-import mtaubert.loginapplication.RoomDatabase.UserRoomDatabase
+import mtaubert.loginapplication.Data.DB.UserRoomDatabase
 import mtaubert.loginapplication.databinding.FragmentLoginBinding
 
 class LoginFragment : Fragment() {
 
-    private lateinit var db:UserRoomDatabase
+    private lateinit var db: UserRoomDatabase
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -97,7 +96,7 @@ class LoginFragment : Fragment() {
     /**
      * Successful login, goes to the account fragment
      */
-    private fun loginSuccess(user:User) {
+    private fun loginSuccess(user: User) {
         (activity as LoginActivity).currentUser = user //Sets the current user
         view?.findNavController()?.navigate(R.id.action_loginFragment_to_accountFragment)
     }

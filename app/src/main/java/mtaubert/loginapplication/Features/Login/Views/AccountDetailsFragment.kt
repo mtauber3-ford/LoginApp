@@ -1,4 +1,4 @@
-package mtaubert.loginapplication.Fragments
+package mtaubert.loginapplication.Features.Login.Views
 
 /**
  * Account Details
@@ -16,8 +16,8 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import mtaubert.loginapplication.Activities.LoginActivity
-import mtaubert.loginapplication.Data.User
+import mtaubert.loginapplication.Features.Login.Views.LoginActivity
+import mtaubert.loginapplication.Data.DB.Model.User
 import mtaubert.loginapplication.R
 import mtaubert.loginapplication.databinding.FragmentAccountDetailsBinding
 

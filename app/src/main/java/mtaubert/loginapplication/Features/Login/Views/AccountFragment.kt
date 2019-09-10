@@ -1,4 +1,4 @@
-package mtaubert.loginapplication.Fragments
+package mtaubert.loginapplication.Features.Login.Views
 
 
 import android.os.Bundle
@@ -10,7 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import mtaubert.loginapplication.Activities.LoginActivity
+import mtaubert.loginapplication.Features.Login.Views.LoginActivity
 import mtaubert.loginapplication.R
 import mtaubert.loginapplication.databinding.FragmentAccountBinding
 

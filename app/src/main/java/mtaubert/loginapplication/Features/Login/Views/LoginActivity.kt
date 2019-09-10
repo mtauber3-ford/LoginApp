@@ -1,17 +1,18 @@
-package mtaubert.loginapplication.Activities
+package mtaubert.loginapplication.Features.Login.Views
 
 import android.content.Context
 import android.os.Bundle
 import androidx.room.Room
-import mtaubert.loginapplication.Data.User
+import mtaubert.loginapplication.Utils.Activities.BaseActivity
+import mtaubert.loginapplication.Data.DB.Model.User
 import mtaubert.loginapplication.R
-import mtaubert.loginapplication.RoomDatabase.UserRoomDatabase
+import mtaubert.loginapplication.Data.DB.UserRoomDatabase
 
 const val USER_KEY = "user"
 
 class LoginActivity : BaseActivity() {
-    lateinit var db:UserRoomDatabase //Database used for user info
-    var currentUser:User? = null //Current logged in user, null means no user is logged in
+    lateinit var db: UserRoomDatabase //Database used for user info
+    var currentUser: User? = null //Current logged in user, null means no user is logged in
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         val savedUser = savedInstanceState?.getStringArrayList(USER_KEY)

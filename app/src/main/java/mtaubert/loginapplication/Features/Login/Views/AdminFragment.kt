@@ -1,4 +1,4 @@
-package mtaubert.loginapplication.Fragments
+package mtaubert.loginapplication.Features.Login.Views
 
 
 import android.os.Bundle
@@ -11,11 +11,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import mtaubert.loginapplication.Activities.LoginActivity
-import mtaubert.loginapplication.Data.User
-import mtaubert.loginapplication.DataAccessObjects.UserDAO
+import mtaubert.loginapplication.Data.DB.Model.User
+import mtaubert.loginapplication.Data.DB.DAO.UserDAO
 import mtaubert.loginapplication.R
-import mtaubert.loginapplication.UserListAdapter
+import mtaubert.loginapplication.Utils.Adapters.UserListAdapter
 import mtaubert.loginapplication.databinding.FragmentAdminBinding
 
 class AdminFragment : Fragment() {

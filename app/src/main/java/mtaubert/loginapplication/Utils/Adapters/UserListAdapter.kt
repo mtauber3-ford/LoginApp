@@ -1,14 +1,13 @@
-package mtaubert.loginapplication
+package mtaubert.loginapplication.Utils.Adapters
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
-import mtaubert.loginapplication.Data.User
+import mtaubert.loginapplication.Data.DB.Model.User
+import mtaubert.loginapplication.R
 
 class UserListAdapter internal constructor(context: Context) : RecyclerView.Adapter<UserListAdapter.UserViewHolder>() {
 

@@ -5,7 +5,7 @@
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".Fragments.SignUpFragment" android:id="@+id/constraintLayout"
+            tools:context=".Features.Login.Views.SignUpFragment" android:id="@+id/constraintLayout"
             android:background="?attr/backgroundColor">
         <EditText
                 android:layout_width="wrap_content"

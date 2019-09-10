@@ -1,7 +1,7 @@
-package mtaubert.loginapplication.DataAccessObjects
+package mtaubert.loginapplication.Data.DB.DAO
 
 import androidx.room.*
-import mtaubert.loginapplication.Data.User
+import mtaubert.loginapplication.Data.DB.Model.User
 
 @Dao
 interface UserDAO {
@@ -15,10 +15,10 @@ interface UserDAO {
     suspend fun insert(vararg user: User)
 
     @Update
-    suspend fun updateUser(vararg user:User)
+    suspend fun updateUser(vararg user: User)
 
     @Delete
-    suspend fun deleteUser(vararg user:User)
+    suspend fun deleteUser(vararg user: User)
 
     @Query("DELETE FROM Users_Table")
     suspend  fun deleteAllUsers()

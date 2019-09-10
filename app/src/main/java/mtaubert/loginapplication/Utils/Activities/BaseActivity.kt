@@ -1,4 +1,4 @@
-package mtaubert.loginapplication.Activities
+package mtaubert.loginapplication.Utils.Activities
 
 import android.content.Context
 import android.content.SharedPreferences
