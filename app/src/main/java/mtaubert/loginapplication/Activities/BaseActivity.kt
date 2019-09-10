@@ -24,10 +24,10 @@ open class BaseActivity : AppCompatActivity() {
         setAppTheme(currentTheme)
     }
 
-
     /**
      * Confirms the theme and updates it if needed
      */
+
     override fun onResume() {
         super.onResume()
         val theme = prefs.getString("current_theme", "DarkTheme")
