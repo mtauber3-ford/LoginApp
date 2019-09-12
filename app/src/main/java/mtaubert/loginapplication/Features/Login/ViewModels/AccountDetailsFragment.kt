@@ -1,4 +1,4 @@
-package mtaubert.loginapplication.Features.Login.Views
+package mtaubert.loginapplication.Features.Login.ViewModels
 
 /**
  * Account Details
@@ -16,12 +16,18 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import mtaubert.loginapplication.Features.Login.Views.LoginActivity
 import mtaubert.loginapplication.Data.DB.Model.User
+import mtaubert.loginapplication.Features.Login.Models.LoginModel
 import mtaubert.loginapplication.R
 import mtaubert.loginapplication.databinding.FragmentAccountDetailsBinding
 
-class AccountDetailsFragment : Fragment() {
+class AccountDetailsFragment(private val loginModel: LoginModel) : Fragment() {
+
+    companion object {
+        fun newInstance(loginModel: LoginModel): AccountDetailsFragment {
+            return AccountDetailsFragment(loginModel)
+        }
+    }
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -59,7 +65,7 @@ class AccountDetailsFragment : Fragment() {
      * Sets the values for the editTextViews to show the user's info
      */
     private fun populateEditTexts(binding:FragmentAccountDetailsBinding) {
-        val user = (activity as LoginActivity).currentUser
+        val user = loginModel.currentUser
         if (user != null) {
             binding.nameInput.setText(user.name)
             binding.emailInput.setText(user.email)
@@ -103,16 +109,16 @@ class AccountDetailsFragment : Fragment() {
     private fun saveDetails(email: String, password: String, name: String) {
         val userDao = (activity as LoginActivity).db.userDao()
         GlobalScope.launch {
-            if((activity as LoginActivity).currentUser != null) {
+            if(loginModel.currentUser != null) {
                 val users = userDao.getUser(email)
                 val  updatedUser = User(email, password, name)
                 if(users.isEmpty()) { //User has set a new email
-                    userDao.deleteUser((activity as LoginActivity).currentUser!!) //Get rid of the saved user data for the old email
+                    userDao.deleteUser(loginModel.currentUser!!) //Get rid of the saved user data for the old email
                     userDao.insert(updatedUser) //Add the user back with the new email
                 } else { //User just changed password or name
                     userDao.updateUser(updatedUser)
                 }
-                (activity as LoginActivity).currentUser = updatedUser
+                loginModel.currentUser = updatedUser
                 activity?.runOnUiThread{
                     Toast.makeText(activity, "Updated account details!" , Toast.LENGTH_LONG).show()
                 }

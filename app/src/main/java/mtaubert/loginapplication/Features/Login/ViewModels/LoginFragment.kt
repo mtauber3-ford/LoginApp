@@ -1,21 +1,37 @@
-package mtaubert.loginapplication.Features.Login.Views
+package mtaubert.loginapplication.Features.Login.ViewModels
 
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
-import androidx.navigation.findNavController
 import androidx.databinding.DataBindingUtil
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import mtaubert.loginapplication.Data.DB.Model.User
-import mtaubert.loginapplication.R
 import mtaubert.loginapplication.Data.DB.UserRoomDatabase
+import mtaubert.loginapplication.Features.Login.Models.LoginModel
 import mtaubert.loginapplication.databinding.FragmentLoginBinding
+
 
 class LoginFragment : Fragment() {
 
     private lateinit var db: UserRoomDatabase
+
+    private val loginModel = LoginModel()
+
+    companion object {
+        fun newInstance(loginModel: LoginModel): LoginFragment {
+            val args = Bundle()
+            if (loginModel.currentUser != null) {
+                args.putString("email", loginModel.currentUser?.email)
+                args.putString("password", loginModel.currentUser?.password)
+                args.putString("name", loginModel.currentUser?.name)
+            }
+            val fragment = LoginFragment()
+            fragment.arguments = args
+            return fragment
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,14 +40,16 @@ class LoginFragment : Fragment() {
         // Inflate the layout for this fragment
 
         val binding = DataBindingUtil.inflate<FragmentLoginBinding>(inflater,
-            R.layout.fragment_login,container,false)
+            mtaubert.loginapplication.R.layout.fragment_login,container,false)
 
         db = (activity as LoginActivity).db
-
+        if(savedInstanceState != null) {
+            loginModel.currentUser = User(savedInstanceState.getString("email")!!, savedInstanceState.getString("password")!!, savedInstanceState.getString("name")!!)
+        }
         //Logs out the current user if they get here
-        if ((activity as LoginActivity).currentUser != null) {
-            Toast.makeText(activity, "Logged out ${(activity as LoginActivity).currentUser!!.email}", Toast.LENGTH_LONG).show()
-            (activity as LoginActivity).currentUser = null
+        if (loginModel.currentUser != null) {
+            Toast.makeText(activity, "Logged out ${loginModel.currentUser!!.email}", Toast.LENGTH_LONG).show()
+           loginModel.currentUser = null
         }
 
         setupButtons(binding)
@@ -41,12 +59,12 @@ class LoginFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater?.inflate(R.menu.admin_menu, menu)
+        inflater?.inflate(mtaubert.loginapplication.R.menu.admin_menu, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
-            R.id.admin -> view?.findNavController()?.navigate(R.id.action_loginFragment_to_adminFragment) //goes to the admin fragment
+            mtaubert.loginapplication.R.id.admin -> (activity as LoginActivity).changeFragment("admin", loginModel)
             else -> return super.onOptionsItemSelected(item)
         }
         return true
@@ -58,7 +76,7 @@ class LoginFragment : Fragment() {
     private fun setupButtons(binding:FragmentLoginBinding) {
         //Sign up button goes to the sign up fragment
         binding.signUpButton.setOnClickListener {
-            it!!.findNavController().navigate(R.id.action_loginFragment_to_signUpFragment)
+            (activity as LoginActivity).changeFragment("signUp", loginModel)
         }
 
         //Checks if the login credentials are valid and goes to the account fragment
@@ -97,8 +115,8 @@ class LoginFragment : Fragment() {
      * Successful login, goes to the account fragment
      */
     private fun loginSuccess(user: User) {
-        (activity as LoginActivity).currentUser = user //Sets the current user
-        view?.findNavController()?.navigate(R.id.action_loginFragment_to_accountFragment)
+        loginModel .currentUser = user //Sets the current user
+        (activity as LoginActivity).changeFragment("dashboard", loginModel)
     }
 
     /**

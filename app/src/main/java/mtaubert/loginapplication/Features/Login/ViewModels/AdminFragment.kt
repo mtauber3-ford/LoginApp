@@ -1,4 +1,4 @@
-package mtaubert.loginapplication.Features.Login.Views
+package mtaubert.loginapplication.Features.Login.ViewModels
 
 
 import android.os.Bundle
@@ -13,11 +13,18 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import mtaubert.loginapplication.Data.DB.Model.User
 import mtaubert.loginapplication.Data.DB.DAO.UserDAO
+import mtaubert.loginapplication.Features.Login.Models.LoginModel
 import mtaubert.loginapplication.R
 import mtaubert.loginapplication.Utils.Adapters.UserListAdapter
 import mtaubert.loginapplication.databinding.FragmentAdminBinding
 
-class AdminFragment : Fragment() {
+class AdminFragment(private val loginModel: LoginModel) : Fragment() {
+
+    companion object {
+        fun newInstance(loginModel: LoginModel): AdminFragment {
+            return AdminFragment(loginModel)
+        }
+    }
 
     private lateinit var userAdapter: UserListAdapter //Adapter for the recycler view
     private lateinit var userDao: UserDAO

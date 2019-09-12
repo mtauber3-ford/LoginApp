@@ -5,16 +5,9 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".Features.Login.Views.LoginActivity"
-        android:id="@+id/Background">
+        tools:context=".Features.Login.ViewModels.LoginActivity"
+        android:id="@+id/root_layout">
 
-    <fragment
-        android:id="@+id/myNavHostFragment"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:navGraph="@navigation/navigation"
-        app:defaultNavHost="true" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

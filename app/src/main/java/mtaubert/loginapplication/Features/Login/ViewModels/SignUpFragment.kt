@@ -1,4 +1,4 @@
-package mtaubert.loginapplication.Features.Login.Views
+package mtaubert.loginapplication.Features.Login.ViewModels
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,14 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.findNavController
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import mtaubert.loginapplication.Data.DB.Model.User
+import mtaubert.loginapplication.Features.Login.Models.LoginModel
 import mtaubert.loginapplication.R
 import mtaubert.loginapplication.databinding.FragmentSignUpBinding
 
-class SignUpFragment : Fragment() {
+class SignUpFragment(private val loginModel: LoginModel) : Fragment() {
+
+    companion object {
+        fun newInstance(loginModel: LoginModel): SignUpFragment {
+            return SignUpFragment(loginModel)
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,7 +40,7 @@ class SignUpFragment : Fragment() {
     private fun setupButtons(binding:FragmentSignUpBinding) {
         //The complete onClickListener with Navigation
         binding.loginButton.setOnClickListener {
-            it!!.findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
+            (activity as LoginActivity).changeFragment("login", loginModel)
         }
         binding.signUpButton.setOnClickListener {
             validateInputs(binding.nameEntry.text.toString(), binding.emailEntry.text.toString(), binding.passwordEntry.text.toString()) //Validates the info the user gave
@@ -75,8 +82,8 @@ class SignUpFragment : Fragment() {
                 }
             } else { //Saves the user to the DB, sets currentUser to the one created and moves to the account Fragment
                 (activity as LoginActivity).db.userDao().insert(user)
-                (activity as LoginActivity).currentUser = user
-                view!!.findNavController().navigate(R.id.action_signUpFragment_to_accountFragment)
+                loginModel.currentUser = user
+                (activity as LoginActivity).changeFragment("dashboard", loginModel)
             }
         }
     }

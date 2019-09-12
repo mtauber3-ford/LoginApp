@@ -7,7 +7,7 @@
             android:id="@+id/constrainLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".Features.Login.Views.AccountFragment"
+            tools:context=".Features.Login.ViewModels.AccountFragment"
             android:background="?attr/backgroundColor">
 
         <Button

@@ -20,6 +20,7 @@ open class BaseActivity : AppCompatActivity() {
         if(prefs.getString("current_theme", "empty") == "empty") {
             prefs.edit().putString("current_theme", "DarkTheme").apply()
         }
+
         currentTheme = prefs.getString("current_theme", "LightTheme")!!
         setAppTheme(currentTheme)
     }
@@ -27,7 +28,6 @@ open class BaseActivity : AppCompatActivity() {
     /**
      * Confirms the theme and updates it if needed
      */
-
     override fun onResume() {
         super.onResume()
         val theme = prefs.getString("current_theme", "DarkTheme")
