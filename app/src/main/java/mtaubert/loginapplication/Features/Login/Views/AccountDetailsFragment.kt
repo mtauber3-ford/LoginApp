@@ -1,4 +1,4 @@
-package mtaubert.loginapplication.Features.Login.ViewModels
+package mtaubert.loginapplication.Features.Login.Views
 
 /**
  * Account Details
