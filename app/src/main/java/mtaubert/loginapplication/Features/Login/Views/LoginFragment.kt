@@ -9,7 +9,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import mtaubert.loginapplication.Data.DB.Model.User
 import mtaubert.loginapplication.Data.DB.UserRoomDatabase
 import mtaubert.loginapplication.Features.Login.Models.LoginModel
@@ -37,14 +39,23 @@ class LoginFragment : BaseLoginFragment() {
             mtaubert.loginapplication.R.layout.fragment_login, container, false
         )
         binding.loginButton.setOnClickListener {
-            if(loginViewModel.validateUserLoginDetails(binding.usernameInput.text.toString(), binding.passwordInput.text.toString())) {
-                (activity as LoginActivity).changeFragment("dashboard")
-            } else {
-                //nothing
-            }
+            loginUser(binding.usernameInput.text.toString(), binding.passwordInput.text.toString())
         }
 
         return binding.root
+    }
+
+    private fun loginUser(email: String, password: String) = runBlocking {
+        val loginValid = async {
+            loginViewModel.validateUserLoginDetails(email, password)
+        }
+
+        if(loginValid.await()) {
+            (activity as LoginActivity).changeFragment("dashboard")
+        } else {
+            Toast.makeText(activity, "Login details invalid. Try again!", Toast.LENGTH_LONG).show()
+        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {

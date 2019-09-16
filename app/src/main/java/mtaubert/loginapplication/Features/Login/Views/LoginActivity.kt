@@ -5,6 +5,8 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.room.Room
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import mtaubert.loginapplication.Utils.Activities.BaseActivity
 import mtaubert.loginapplication.Data.DB.Model.User
 import mtaubert.loginapplication.R
@@ -20,7 +22,6 @@ class LoginActivity : BaseActivity() {
     lateinit var loginViewModel: LoginViewModel
 
     lateinit var db: UserRoomDatabase //Database used for user info
-    private val loginModel = LoginModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +30,6 @@ class LoginActivity : BaseActivity() {
         if(savedInstanceState == null) {
             changeFragment("login")
         }
-        buildDB()
     }
 
     /**
@@ -46,16 +46,6 @@ class LoginActivity : BaseActivity() {
             }
         }
         recreate()
-    }
-
-    /**
-     * Builds the DB
-     */
-    private fun buildDB() {
-        db = Room.databaseBuilder(
-            applicationContext,
-            UserRoomDatabase::class.java, "user_database.db"
-        ).build()
     }
 
     /**

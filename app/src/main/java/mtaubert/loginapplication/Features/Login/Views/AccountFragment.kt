@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import mtaubert.loginapplication.Data.DB.Model.User
 import mtaubert.loginapplication.Features.Login.Models.LoginModel
 import mtaubert.loginapplication.Features.Login.ViewModels.LoginViewModel
 import mtaubert.loginapplication.R
@@ -32,7 +33,6 @@ class AccountFragment : BaseLoginFragment() {
     ): View?
     {
         // Inflate the layout for this fragment
-
         val binding = DataBindingUtil.inflate<FragmentAccountBinding>(
             inflater,
             R.layout.fragment_account, container, false
