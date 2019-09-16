@@ -13,12 +13,11 @@ import kotlinx.coroutines.launch
 import mtaubert.loginapplication.Features.Login.Models.LoginModel
 import mtaubert.loginapplication.Features.Login.ViewModels.LoginViewModel
 import mtaubert.loginapplication.R
+import mtaubert.loginapplication.Utils.Fragments.BaseLoginFragment
 import mtaubert.loginapplication.databinding.FragmentAccountBinding
 import mtaubert.loginapplication.databinding.FragmentLoginBinding
 
-class AccountFragment : Fragment() {
-
-    private lateinit var loginViewModel: LoginViewModel
+class AccountFragment : BaseLoginFragment() {
 
     companion object {
         fun newInstance(): AccountFragment {
@@ -39,13 +38,16 @@ class AccountFragment : Fragment() {
             R.layout.fragment_account, container, false
         )
 
-        loginViewModel = ViewModelProviders.of(this.activity!!).get(LoginViewModel::class.java)
-
         binding.nameDisplay.append(" " + loginViewModel.getCurrentUser()!!.name)
 
         binding.logoutButton.setOnClickListener {
             loginViewModel.logoutCurrentUser()
             (activity as LoginActivity).changeFragment("login")
+        }
+
+        binding.accountDetailsButton.setOnClickListener {
+            (activity as LoginActivity).changeFragment("accountDetails")
+
         }
 
         return binding.root

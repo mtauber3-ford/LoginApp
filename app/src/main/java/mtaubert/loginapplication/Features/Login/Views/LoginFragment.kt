@@ -14,12 +14,11 @@ import mtaubert.loginapplication.Data.DB.Model.User
 import mtaubert.loginapplication.Data.DB.UserRoomDatabase
 import mtaubert.loginapplication.Features.Login.Models.LoginModel
 import mtaubert.loginapplication.Features.Login.ViewModels.LoginViewModel
+import mtaubert.loginapplication.Utils.Fragments.BaseLoginFragment
 import mtaubert.loginapplication.databinding.FragmentLoginBinding
 
 
-class LoginFragment() : Fragment() {
-
-    private lateinit var loginViewModel: LoginViewModel
+class LoginFragment : BaseLoginFragment() {
 
     companion object {
         fun newInstance(): LoginFragment {
@@ -28,8 +27,8 @@ class LoginFragment() : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+    inflater: LayoutInflater, container: ViewGroup?,
+    savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
 
@@ -37,7 +36,6 @@ class LoginFragment() : Fragment() {
             inflater,
             mtaubert.loginapplication.R.layout.fragment_login, container, false
         )
-        loginViewModel = ViewModelProviders.of(this.activity!!).get(LoginViewModel::class.java)
         binding.loginButton.setOnClickListener {
             if(loginViewModel.validateUserLoginDetails(binding.usernameInput.text.toString(), binding.passwordInput.text.toString())) {
                 (activity as LoginActivity).changeFragment("dashboard")
@@ -49,7 +47,18 @@ class LoginFragment() : Fragment() {
         return binding.root
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater?.inflate(mtaubert.loginapplication.R.menu.admin_menu, menu)
+    }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            mtaubert.loginapplication.R.id.admin -> (activity as LoginActivity).changeFragment("admin")
+            else -> return super.onOptionsItemSelected(item)
+        }
+        return true
+    }
 //
 //    private lateinit var db: UserRoomDatabase
 //    private lateinit var loginViewModel: LoginModel

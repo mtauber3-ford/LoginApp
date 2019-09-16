@@ -40,7 +40,7 @@ class SignUpFragment(private val loginModel: LoginModel) : Fragment() {
     private fun setupButtons(binding:FragmentSignUpBinding) {
         //The complete onClickListener with Navigation
         binding.loginButton.setOnClickListener {
-            (activity as LoginActivity).changeFragment("login", loginModel)
+            (activity as LoginActivity).changeFragment("login")
         }
         binding.signUpButton.setOnClickListener {
             validateInputs(binding.nameEntry.text.toString(), binding.emailEntry.text.toString(), binding.passwordEntry.text.toString()) //Validates the info the user gave
@@ -83,7 +83,7 @@ class SignUpFragment(private val loginModel: LoginModel) : Fragment() {
             } else { //Saves the user to the DB, sets currentUser to the one created and moves to the account Fragment
                 (activity as LoginActivity).db.userDao().insert(user)
                 loginModel.currentUser = user
-                (activity as LoginActivity).changeFragment("dashboard", loginModel)
+                (activity as LoginActivity).changeFragment("dashboard")
             }
         }
     }
