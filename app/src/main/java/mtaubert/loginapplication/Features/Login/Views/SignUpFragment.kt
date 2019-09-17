@@ -26,7 +26,7 @@ class SignUpFragment : BaseLoginFragment() {
     ): View? {
 
         val binding = DataBindingUtil.inflate<FragmentSignUpBinding>(inflater,
-            R.layout.fragment_sign_up,container,false)
+            R.layout.login_fragment_sign_up,container,false)
 
         setupButtons(binding)
 

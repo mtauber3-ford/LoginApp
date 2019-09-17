@@ -29,7 +29,7 @@ class Dashboard : BaseLoginFragment() {
         // Inflate the layout for this fragment
         val binding = DataBindingUtil.inflate<FragmentDashboardBinding>(
             inflater,
-            R.layout.fragment_dashboard, container, false
+            R.layout.login_fragment_dashboard, container, false
         )
 
         //No back button on the tool bar

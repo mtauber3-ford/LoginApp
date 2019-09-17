@@ -5,10 +5,6 @@ import android.os.Bundle
 import mtaubert.loginapplication.Utils.Activities.BaseActivity
 import mtaubert.loginapplication.R
 import mtaubert.loginapplication.Data.DB.UserRoomDatabase
-import mtaubert.loginapplication.Features.Login.ViewModels.LoginViewModel
-
-const val USER_KEY = "user"
-const val FRAGMENT_KEY = "fragment"
 
 class LoginActivity : BaseActivity() {
 
@@ -17,7 +13,7 @@ class LoginActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.login_activity_main)
         if(savedInstanceState == null) {
             changeFragment("login")
         }

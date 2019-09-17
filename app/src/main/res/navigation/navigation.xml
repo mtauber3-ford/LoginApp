@@ -4,7 +4,7 @@
             xmlns:tools="http://schemas.android.com/tools" android:id="@+id/navigation"
             app:startDestination="@id/loginFragment">
     <fragment android:id="@+id/loginFragment" android:name="mtaubert.loginapplication.Features.Login.Views.LoginFragment"
-              android:label="fragment_login" tools:layout="@layout/fragment_login">
+              android:label="fragment_login" tools:layout="@layout/login_fragment_login">
         <action android:id="@+id/action_loginFragment_to_signUpFragment" app:destination="@id/signUpFragment"
                 app:popUpToInclusive="true"/>
         <action android:id="@+id/action_loginFragment_to_accountFragment" app:destination="@id/accountFragment"
@@ -12,7 +12,7 @@
         <action android:id="@+id/action_loginFragment_to_adminFragment" app:destination="@id/adminFragment"/>
     </fragment>
     <fragment android:id="@+id/signUpFragment" android:name="mtaubert.loginapplication.Features.Login.Views.SignUpFragment"
-              android:label="fragment_sign_up" tools:layout="@layout/fragment_sign_up">
+              android:label="fragment_sign_up" tools:layout="@layout/login_fragment_sign_up">
         <action android:id="@+id/action_signUpFragment_to_loginFragment" app:destination="@id/loginFragment"
         />
         <action android:id="@+id/action_signUpFragment_to_accountFragment" app:destination="@id/accountFragment"

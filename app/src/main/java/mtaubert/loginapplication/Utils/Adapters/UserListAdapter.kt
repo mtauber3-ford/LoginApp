@@ -1,6 +1,5 @@
 package mtaubert.loginapplication.Utils.Adapters
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,7 +29,7 @@ class UserListAdapter internal constructor() : RecyclerView.Adapter<UserListAdap
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val userView = inflater.inflate(R.layout.user_entry_item, parent, false)
+        val userView = inflater.inflate(R.layout.utils_user_entry_item, parent, false)
         return UserViewHolder(userView)
     }
 

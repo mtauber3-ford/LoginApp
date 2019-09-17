@@ -8,7 +8,6 @@ import kotlinx.coroutines.runBlocking
 import mtaubert.loginapplication.Utils.Fragments.BaseLoginFragment
 import mtaubert.loginapplication.databinding.FragmentLoginBinding
 
-
 class LoginFragment : BaseLoginFragment() {
 
     companion object {
@@ -25,7 +24,7 @@ class LoginFragment : BaseLoginFragment() {
 
         val binding = DataBindingUtil.inflate<FragmentLoginBinding>(
             inflater,
-            mtaubert.loginapplication.R.layout.fragment_login, container, false
+            mtaubert.loginapplication.R.layout.login_fragment_login, container, false
         )
 
         //Show options menu

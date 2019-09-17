@@ -2,19 +2,13 @@ package mtaubert.loginapplication.Features.Login.Views
 
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import mtaubert.loginapplication.Data.DB.Model.User
-import mtaubert.loginapplication.Data.DB.DAO.UserDAO
-import mtaubert.loginapplication.Features.Login.Models.LoginModel
 import mtaubert.loginapplication.R
 import mtaubert.loginapplication.Utils.Adapters.UserListAdapter
 import mtaubert.loginapplication.Utils.Fragments.BaseLoginFragment
@@ -35,7 +29,7 @@ class AdminFragment : BaseLoginFragment() {
         savedInstanceState: Bundle?
     ): View? {
         val binding = DataBindingUtil.inflate<FragmentAdminBinding>(inflater,
-            R.layout.fragment_admin,container,false)
+            R.layout.login_fragment_admin,container,false)
 
         setupRecyclerView(binding)
 
