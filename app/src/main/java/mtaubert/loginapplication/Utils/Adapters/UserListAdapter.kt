@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import mtaubert.loginapplication.Data.DB.Model.User
 import mtaubert.loginapplication.R
 
-class UserListAdapter internal constructor(context: Context) : RecyclerView.Adapter<UserListAdapter.UserViewHolder>() {
+class UserListAdapter internal constructor() : RecyclerView.Adapter<UserListAdapter.UserViewHolder>() {
 
     /**
      * UserViewHolder
@@ -22,14 +22,14 @@ class UserListAdapter internal constructor(context: Context) : RecyclerView.Adap
     }
 
     private var usersList = emptyList<User>() //List of current users
-    private val inflater = LayoutInflater.from(context)
+//    private lateinit var inflater = LayoutInflater.from()
     val selectedUsers = ArrayList<User>()
-    //val selectedUsers: LiveData<ArrayList<User()>>
 
     /**
      * Creates and returns a view holder for the list
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
         val userView = inflater.inflate(R.layout.user_entry_item, parent, false)
         return UserViewHolder(userView)
     }
@@ -49,10 +49,12 @@ class UserListAdapter internal constructor(context: Context) : RecyclerView.Adap
         holder.tvEmail.text = current.email
         holder.tvPassword.text = current.password
         holder.tvName.text = current.name
-        holder.itemView.setOnLongClickListener {v:View ->
-            longPress(position, v)
+
+        holder.itemView.setOnLongClickListener {
+            longPress(position, it)
             true
         }
+
         holder.itemView.setBackgroundResource(R.color.unselected)
     }
 
@@ -76,8 +78,6 @@ class UserListAdapter internal constructor(context: Context) : RecyclerView.Adap
             selectedUsers.add(usersList[position])
             v.setBackgroundResource(R.color.selected)
         }
-
-
     }
 }
 

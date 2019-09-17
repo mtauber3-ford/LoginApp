@@ -11,23 +11,24 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import mtaubert.loginapplication.Data.DB.Model.User
 import mtaubert.loginapplication.Data.DB.DAO.UserDAO
 import mtaubert.loginapplication.Features.Login.Models.LoginModel
 import mtaubert.loginapplication.R
 import mtaubert.loginapplication.Utils.Adapters.UserListAdapter
+import mtaubert.loginapplication.Utils.Fragments.BaseLoginFragment
 import mtaubert.loginapplication.databinding.FragmentAdminBinding
 
-class AdminFragment(private val loginModel: LoginModel) : Fragment() {
+class AdminFragment : BaseLoginFragment() {
 
     companion object {
-        fun newInstance(loginModel: LoginModel): AdminFragment {
-            return AdminFragment(loginModel)
+        fun newInstance(): AdminFragment {
+            return AdminFragment()
         }
     }
 
     private lateinit var userAdapter: UserListAdapter //Adapter for the recycler view
-    private lateinit var userDao: UserDAO
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,8 +36,6 @@ class AdminFragment(private val loginModel: LoginModel) : Fragment() {
     ): View? {
         val binding = DataBindingUtil.inflate<FragmentAdminBinding>(inflater,
             R.layout.fragment_admin,container,false)
-
-        userDao = (activity as LoginActivity).db.userDao()
 
         setupRecyclerView(binding)
 
@@ -52,7 +51,7 @@ class AdminFragment(private val loginModel: LoginModel) : Fragment() {
      */
     private fun setupRecyclerView(binding:FragmentAdminBinding) {
         val userList = binding.userListView
-        userAdapter = UserListAdapter(context!!)
+        userAdapter = UserListAdapter()
         userList.adapter = userAdapter
         userList.layoutManager = LinearLayoutManager(context!!)
         loadUserList()
@@ -61,27 +60,22 @@ class AdminFragment(private val loginModel: LoginModel) : Fragment() {
     /**
      * Gets a list of users registered and saved in the DB
      */
-    private fun loadUserList() {
-        GlobalScope.launch {
-            val users = userDao.getAllUsers()
-            activity?.runOnUiThread(Runnable { userAdapter.setUsers(users) })
-        }
+    private fun loadUserList() = runBlocking {
+        val users = loginViewModel.getAllUsers()
+        userAdapter.setUsers(users)
     }
 
     /**
      * Deletes one or multiple users
      */
-    private fun deleteUsersFromList() {
+    private fun deleteUsersFromList() = runBlocking {
         val selectedUsers = userAdapter.selectedUsers
-        if(selectedUsers.isEmpty()) { //No users selected to delete
-            Toast.makeText(activity, "No users to delete selected!", Toast.LENGTH_LONG).show()
-        } else { //Some number of users selected
-            GlobalScope.launch {
-                for(user: User in selectedUsers) {
-                    userDao.deleteUser(user)
-                }
-                loadUserList()
-            }
+        val warning = loginViewModel.deleteUsersFromDB(selectedUsers)
+
+        if(warning != null) { //Show message if user tried to delete an empty list of users
+            Toast.makeText(activity, warning, Toast.LENGTH_LONG).show()
+        } else {
+            loadUserList()
         }
     }
 }

@@ -2,24 +2,15 @@ package mtaubert.loginapplication.Features.Login.Views
 
 import android.content.Context
 import android.os.Bundle
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
-import androidx.room.Room
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import mtaubert.loginapplication.Utils.Activities.BaseActivity
-import mtaubert.loginapplication.Data.DB.Model.User
 import mtaubert.loginapplication.R
 import mtaubert.loginapplication.Data.DB.UserRoomDatabase
-import mtaubert.loginapplication.Features.Login.Models.LoginModel
 import mtaubert.loginapplication.Features.Login.ViewModels.LoginViewModel
 
 const val USER_KEY = "user"
 const val FRAGMENT_KEY = "fragment"
 
 class LoginActivity : BaseActivity() {
-
-    lateinit var loginViewModel: LoginViewModel
 
     lateinit var db: UserRoomDatabase //Database used for user info
 
@@ -53,9 +44,11 @@ class LoginActivity : BaseActivity() {
      */
     fun changeFragment(target:String) {
         val fragment = when(target) {
-            "dashboard" -> AccountFragment.newInstance()
+            "dashboard" -> Dashboard.newInstance()
             "login" -> LoginFragment.newInstance()
             "accountDetails" -> AccountDetailsFragment.newInstance()
+            "signUp" -> SignUpFragment.newInstance()
+            "admin" -> AdminFragment.newInstance()
             else -> LoginFragment.newInstance()
         }
 
