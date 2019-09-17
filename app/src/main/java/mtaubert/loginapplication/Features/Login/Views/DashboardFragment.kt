@@ -1,22 +1,24 @@
 package mtaubert.loginapplication.Features.Login.Views
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import mtaubert.loginapplication.Features.API.Views.APIActivity
 import mtaubert.loginapplication.R
 import mtaubert.loginapplication.Utils.Fragments.BaseLoginFragment
 import mtaubert.loginapplication.databinding.LoginFragmentDashboardBinding
 import java.lang.NullPointerException
 
-class Dashboard : BaseLoginFragment() {
+class DashboardFragment : BaseLoginFragment() {
 
     companion object {
-        fun newInstance(): Dashboard {
-            return Dashboard()
+        fun newInstance(): DashboardFragment {
+            return DashboardFragment()
         }
     }
 
@@ -59,7 +61,12 @@ class Dashboard : BaseLoginFragment() {
 
         binding.accountDetailsButton.setOnClickListener {
             (activity as LoginActivity).changeFragment("accountDetails")
+        }
 
+        binding.apiButton.setOnClickListener {
+            val intent = Intent((activity as LoginActivity), APIActivity::class.java)
+            intent.putExtra("currentUser", loginViewModel.getCurrentUser())
+            startActivity(intent)
         }
     }
 

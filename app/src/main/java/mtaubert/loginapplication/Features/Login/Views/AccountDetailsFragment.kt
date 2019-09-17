@@ -48,7 +48,7 @@ class AccountDetailsFragment : BaseLoginFragment() {
     }
 
     private fun setupButtonListeners(binding: LoginFragmentAccountDetailsBinding) {
-        val preferences = (activity as LoginActivity).getPreferences(Context.MODE_PRIVATE)
+        val preferences = (activity as LoginActivity).getSharedPreferences("THEME",Context.MODE_PRIVATE)
         val darkMode = preferences.getString("current_theme", "LightTheme") == "DarkTheme"
         if(binding.darkModeSwitch.isChecked != darkMode) {
             binding.darkModeSwitch.isChecked = darkMode

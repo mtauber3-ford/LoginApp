@@ -23,7 +23,7 @@ class LoginActivity : BaseActivity() {
      * Switches theme between light and dark mode
      */
     fun toggleTheme() {
-        val preferences = getPreferences(Context.MODE_PRIVATE)
+        val preferences = getSharedPreferences("THEME", Context.MODE_PRIVATE)
         when(preferences.getString("current_theme", "DarkTheme")) {
             "LightTheme" -> {
                 preferences.edit().putString("current_theme", "DarkTheme").apply()
@@ -40,7 +40,7 @@ class LoginActivity : BaseActivity() {
      */
     fun changeFragment(target:String) {
         val fragment = when(target) {
-            "dashboard" -> Dashboard.newInstance()
+            "dashboard" -> DashboardFragment.newInstance()
             "login" -> LoginFragment.newInstance()
             "accountDetails" -> AccountDetailsFragment.newInstance()
             "signUp" -> SignUpFragment.newInstance()

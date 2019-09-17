@@ -16,9 +16,9 @@ open class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        prefs = getPreferences(Context.MODE_PRIVATE)
+        prefs = getSharedPreferences("THEME", Context.MODE_PRIVATE)
         if(prefs.getString("current_theme", "empty") == "empty") {
-            prefs.edit().putString("current_theme", "DarkTheme").apply()
+            prefs.edit().putString("current_theme", "LightTheme").apply()
         }
 
         currentTheme = prefs.getString("current_theme", "LightTheme")!!

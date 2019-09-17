@@ -42,12 +42,12 @@ class LoginFragment : BaseLoginFragment() {
             (activity as LoginActivity).changeFragment("signUp")
         }
 
-        checkIfUserLoggedIn(binding)
+        checkIfUserLoggedIn()
 
         return binding.root
     }
 
-    private fun checkIfUserLoggedIn(binding: LoginFragmentLoginBinding) {
+    private fun checkIfUserLoggedIn() {
         if(loginViewModel.getCurrentUser() != null){
             Toast.makeText(activity, "Logged out ${loginViewModel.getCurrentUser()?.name}", Toast.LENGTH_LONG).show()
             loginViewModel.logoutCurrentUser()
