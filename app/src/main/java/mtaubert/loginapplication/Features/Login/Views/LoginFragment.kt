@@ -6,7 +6,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import kotlinx.coroutines.runBlocking
 import mtaubert.loginapplication.Utils.Fragments.BaseLoginFragment
-import mtaubert.loginapplication.databinding.FragmentLoginBinding
+import mtaubert.loginapplication.databinding.LoginFragmentLoginBinding
 
 class LoginFragment : BaseLoginFragment() {
 
@@ -22,7 +22,7 @@ class LoginFragment : BaseLoginFragment() {
     ): View? {
         // Inflate the layout for this fragment
 
-        val binding = DataBindingUtil.inflate<FragmentLoginBinding>(
+        val binding = DataBindingUtil.inflate<LoginFragmentLoginBinding>(
             inflater,
             mtaubert.loginapplication.R.layout.login_fragment_login, container, false
         )
@@ -47,7 +47,7 @@ class LoginFragment : BaseLoginFragment() {
         return binding.root
     }
 
-    private fun checkIfUserLoggedIn(binding: FragmentLoginBinding) {
+    private fun checkIfUserLoggedIn(binding: LoginFragmentLoginBinding) {
         if(loginViewModel.getCurrentUser() != null){
             Toast.makeText(activity, "Logged out ${loginViewModel.getCurrentUser()?.name}", Toast.LENGTH_LONG).show()
             loginViewModel.logoutCurrentUser()

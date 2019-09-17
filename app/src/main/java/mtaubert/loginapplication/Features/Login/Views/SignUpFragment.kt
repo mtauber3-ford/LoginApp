@@ -9,7 +9,7 @@ import androidx.databinding.DataBindingUtil
 import kotlinx.coroutines.runBlocking
 import mtaubert.loginapplication.R
 import mtaubert.loginapplication.Utils.Fragments.BaseLoginFragment
-import mtaubert.loginapplication.databinding.FragmentSignUpBinding
+import mtaubert.loginapplication.databinding.LoginFragmentSignUpBinding
 
 class SignUpFragment : BaseLoginFragment() {
 
@@ -25,7 +25,7 @@ class SignUpFragment : BaseLoginFragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val binding = DataBindingUtil.inflate<FragmentSignUpBinding>(inflater,
+        val binding = DataBindingUtil.inflate<LoginFragmentSignUpBinding>(inflater,
             R.layout.login_fragment_sign_up,container,false)
 
         setupButtons(binding)
@@ -36,7 +36,7 @@ class SignUpFragment : BaseLoginFragment() {
     /**
      * Sets up the button on click listeners
      */
-    private fun setupButtons(binding:FragmentSignUpBinding) {
+    private fun setupButtons(binding:LoginFragmentSignUpBinding) {
 
         //returns the user to the login fragment
         binding.loginButton.setOnClickListener {

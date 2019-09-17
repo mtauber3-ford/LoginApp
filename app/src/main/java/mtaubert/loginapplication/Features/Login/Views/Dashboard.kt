@@ -9,7 +9,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import mtaubert.loginapplication.R
 import mtaubert.loginapplication.Utils.Fragments.BaseLoginFragment
-import mtaubert.loginapplication.databinding.FragmentDashboardBinding
+import mtaubert.loginapplication.databinding.LoginFragmentDashboardBinding
 import java.lang.NullPointerException
 
 class Dashboard : BaseLoginFragment() {
@@ -27,7 +27,7 @@ class Dashboard : BaseLoginFragment() {
     ): View?
     {
         // Inflate the layout for this fragment
-        val binding = DataBindingUtil.inflate<FragmentDashboardBinding>(
+        val binding = DataBindingUtil.inflate<LoginFragmentDashboardBinding>(
             inflater,
             R.layout.login_fragment_dashboard, container, false
         )
@@ -42,7 +42,7 @@ class Dashboard : BaseLoginFragment() {
         return binding.root
     }
 
-    private fun populateNameDisplayWithUserName(binding: FragmentDashboardBinding) {
+    private fun populateNameDisplayWithUserName(binding: LoginFragmentDashboardBinding) {
         try {
             binding.nameDisplay.append(" " + loginViewModel.getCurrentUser()!!.name)
         } catch (e: NullPointerException) { //User somehow got to the screen without logging into the app
@@ -52,7 +52,7 @@ class Dashboard : BaseLoginFragment() {
 
     }
 
-    private fun setupButtonListeners(binding: FragmentDashboardBinding) {
+    private fun setupButtonListeners(binding: LoginFragmentDashboardBinding) {
         binding.logoutButton.setOnClickListener {
             logoutAndGoToLoginFragment()
         }

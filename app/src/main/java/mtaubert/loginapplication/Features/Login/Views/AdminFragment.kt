@@ -12,7 +12,7 @@ import kotlinx.coroutines.runBlocking
 import mtaubert.loginapplication.R
 import mtaubert.loginapplication.Utils.Adapters.UserListAdapter
 import mtaubert.loginapplication.Utils.Fragments.BaseLoginFragment
-import mtaubert.loginapplication.databinding.FragmentAdminBinding
+import mtaubert.loginapplication.databinding.LoginFragmentAdminBinding
 
 class AdminFragment : BaseLoginFragment() {
 
@@ -28,7 +28,7 @@ class AdminFragment : BaseLoginFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = DataBindingUtil.inflate<FragmentAdminBinding>(inflater,
+        val binding = DataBindingUtil.inflate<LoginFragmentAdminBinding>(inflater,
             R.layout.login_fragment_admin,container,false)
 
         setupRecyclerView(binding)
@@ -43,7 +43,7 @@ class AdminFragment : BaseLoginFragment() {
     /**
      * Sets up the recycler view
      */
-    private fun setupRecyclerView(binding:FragmentAdminBinding) {
+    private fun setupRecyclerView(binding:LoginFragmentAdminBinding) {
         val userList = binding.userListView
         userAdapter = UserListAdapter()
         userList.adapter = userAdapter

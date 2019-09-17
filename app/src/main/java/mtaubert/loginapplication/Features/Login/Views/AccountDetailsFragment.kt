@@ -17,7 +17,7 @@ import kotlinx.coroutines.runBlocking
 import mtaubert.loginapplication.Data.DB.Model.User
 import mtaubert.loginapplication.R
 import mtaubert.loginapplication.Utils.Fragments.BaseLoginFragment
-import mtaubert.loginapplication.databinding.FragmentAccountDetailsBinding
+import mtaubert.loginapplication.databinding.LoginFragmentAccountDetailsBinding
 
 class AccountDetailsFragment : BaseLoginFragment() {
 
@@ -34,7 +34,7 @@ class AccountDetailsFragment : BaseLoginFragment() {
             savedInstanceState: Bundle?
     ): View? {
 
-        val binding = DataBindingUtil.inflate<FragmentAccountDetailsBinding>(inflater,
+        val binding = DataBindingUtil.inflate<LoginFragmentAccountDetailsBinding>(inflater,
             R.layout.login_fragment_account_details,container,false)
 
         //Add the back button to the top
@@ -47,7 +47,7 @@ class AccountDetailsFragment : BaseLoginFragment() {
         return binding.root
     }
 
-    private fun setupButtonListeners(binding: FragmentAccountDetailsBinding) {
+    private fun setupButtonListeners(binding: LoginFragmentAccountDetailsBinding) {
         val preferences = (activity as LoginActivity).getPreferences(Context.MODE_PRIVATE)
         val darkMode = preferences.getString("current_theme", "LightTheme") == "DarkTheme"
         if(binding.darkModeSwitch.isChecked != darkMode) {
@@ -79,7 +79,7 @@ class AccountDetailsFragment : BaseLoginFragment() {
     /**
      * Sets the values for the editTextViews to show the user's info
      */
-    private fun populateEditTexts(binding:FragmentAccountDetailsBinding) {
+    private fun populateEditTexts(binding:LoginFragmentAccountDetailsBinding) {
         val user = loginViewModel.getCurrentUser()
         if (user != null) {
             binding.nameInput.setText(user.name)
