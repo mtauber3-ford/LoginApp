@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import kotlinx.coroutines.runBlocking
 import mtaubert.loginapplication.Features.API.Views.APIActivity
 import mtaubert.loginapplication.R
 import mtaubert.loginapplication.Utils.Fragments.BaseLoginFragment
@@ -68,6 +69,15 @@ class DashboardFragment : BaseLoginFragment() {
             intent.putExtra("currentUser", loginViewModel.getCurrentUser())
             startActivity(intent)
         }
+
+        binding.deleteAccountButton.setOnClickListener {
+            deleteCurrentUserAccountAndLogOut()
+        }
+    }
+
+    private fun deleteCurrentUserAccountAndLogOut() = runBlocking {
+        loginViewModel.deleteUsersFromDB(arrayListOf(loginViewModel.getCurrentUser()!!))
+        logoutAndGoToLoginFragment()
     }
 
     private fun logoutAndGoToLoginFragment() {
