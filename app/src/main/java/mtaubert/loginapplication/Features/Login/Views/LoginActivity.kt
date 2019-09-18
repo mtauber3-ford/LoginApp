@@ -2,21 +2,32 @@ package mtaubert.loginapplication.Features.Login.Views
 
 import android.content.Context
 import android.os.Bundle
+import androidx.lifecycle.ViewModelProviders
+import mtaubert.loginapplication.Data.DB.Model.User
 import mtaubert.loginapplication.Utils.Activities.BaseActivity
 import mtaubert.loginapplication.R
 import mtaubert.loginapplication.Data.DB.UserRoomDatabase
+import mtaubert.loginapplication.Features.Login.ViewModels.LoginViewModel
 
 class LoginActivity : BaseActivity() {
 
     lateinit var db: UserRoomDatabase //Database used for user info
+    lateinit var loginViewModel: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.login_activity_main)
-        if(savedInstanceState == null) {
+
+        if(intent.hasExtra("currentUser")) {
+            loginViewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
+            loginViewModel.setCurrentUser(intent.extras?.get("currentUser") as User)
+            intent.removeExtra("currentUser")
+            changeFragment("dashboard")
+        } else if(savedInstanceState == null) {
             changeFragment("login")
         }
+
     }
 
     /**

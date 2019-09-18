@@ -19,6 +19,13 @@ class LoginViewModel(app: Application): AndroidViewModel(app) {
     }
 
     /**
+     * sets the current User
+     */
+    fun setCurrentUser(currentUser: User) {
+        loginModel.currentUser = currentUser
+    }
+
+    /**
      * Grabs and returns all users from the db
      */
     suspend fun getAllUsers(): List<User> {
@@ -32,8 +39,13 @@ class LoginViewModel(app: Application): AndroidViewModel(app) {
             val users = userDao.getUser(updatedUser.email)
 
             if(users.isEmpty()) { //User has set a new email
-                userDao.deleteUser(loginModel.currentUser!!) //Get rid of the saved user data for the old email
-                userDao.insert(updatedUser) //Add the user back with the new email
+                if(db.userDao().getUser(updatedUser.email).isEmpty()) {
+                    userDao.deleteUser(loginModel.currentUser!!) //Get rid of the saved user data for the old email
+                    userDao.insert(updatedUser) //Add the user back with the new email
+                } else {
+                    "The email you're trying to change to already exists!"
+                }
+
             } else { //User just changed password or name
                 userDao.updateUser(updatedUser)
             }

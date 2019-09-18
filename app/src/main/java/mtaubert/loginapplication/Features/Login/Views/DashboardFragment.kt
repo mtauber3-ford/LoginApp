@@ -76,6 +76,7 @@ class DashboardFragment : BaseLoginFragment() {
     }
 
     private fun deleteCurrentUserAccountAndLogOut() = runBlocking {
+        Toast.makeText(activity, "Deleted user ${loginViewModel.getCurrentUser()?.name}", Toast.LENGTH_SHORT).show()
         loginViewModel.deleteUsersFromDB(arrayListOf(loginViewModel.getCurrentUser()!!))
         logoutAndGoToLoginFragment()
     }

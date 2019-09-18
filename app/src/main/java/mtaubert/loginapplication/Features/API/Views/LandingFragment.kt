@@ -1,5 +1,6 @@
 package mtaubert.loginapplication.Features.API.Views
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import mtaubert.loginapplication.Features.Login.ViewModels.LoginViewModel
+import mtaubert.loginapplication.Features.Login.Views.LoginActivity
 import mtaubert.loginapplication.R
 import mtaubert.loginapplication.Utils.Fragments.BaseAPIFragment
 import mtaubert.loginapplication.Utils.Fragments.BaseLoginFragment
@@ -35,7 +37,13 @@ class LandingFragment : BaseAPIFragment() {
         )
 
         binding.userInfoTextview.append(" " + apiViewModel.getCurrentUser()?.name)
-            //.append(" " + loginViewModel.getCurrentUser()!!.name)
+
+        binding.homeButton.setOnClickListener {
+            val intent = Intent((activity as APIActivity), LoginActivity::class.java)
+            intent.putExtra("currentUser", apiViewModel.getCurrentUser())
+            startActivity(intent)
+        }
+
         return binding.root
     }
 }
