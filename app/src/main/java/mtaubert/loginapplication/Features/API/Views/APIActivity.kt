@@ -32,4 +32,9 @@ class APIActivity: BaseActivity() {
             .replace(R.id.root_layout, fragment, target)
             .commit()
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        apiViewModel.clearDisposables()
+    }
 }

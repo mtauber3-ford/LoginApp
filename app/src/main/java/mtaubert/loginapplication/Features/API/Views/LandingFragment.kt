@@ -44,6 +44,10 @@ class LandingFragment : BaseAPIFragment() {
             startActivity(intent)
         }
 
+        binding.button.setOnClickListener {
+            apiViewModel.loadData()
+        }
+
         return binding.root
     }
 }

@@ -70,7 +70,7 @@ class LoginFragment : BaseLoginFragment() {
     /**
      * Options menu setup and listener
      */
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater?.inflate(mtaubert.loginapplication.R.menu.admin_menu, menu)
     }
