@@ -2,6 +2,7 @@ package mtaubert.loginapplication.Features.API.Views
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import mtaubert.loginapplication.Features.Login.ViewModels.LoginViewModel
 import mtaubert.loginapplication.Features.Login.Views.LoginActivity
 import mtaubert.loginapplication.R
@@ -16,6 +19,7 @@ import mtaubert.loginapplication.Utils.Fragments.BaseAPIFragment
 import mtaubert.loginapplication.Utils.Fragments.BaseLoginFragment
 import mtaubert.loginapplication.databinding.ApiFragmentLandingBinding
 import mtaubert.loginapplication.databinding.LoginFragmentLoginBinding
+import java.lang.Exception
 
 class LandingFragment : BaseAPIFragment() {
 
@@ -36,8 +40,6 @@ class LandingFragment : BaseAPIFragment() {
             false
         )
 
-        binding.userInfoTextview.append(" " + apiViewModel.getCurrentUser()?.name)
-
         binding.homeButton.setOnClickListener {
             val intent = Intent((activity as APIActivity), LoginActivity::class.java)
             intent.putExtra("currentUser", apiViewModel.getCurrentUser())
@@ -45,7 +47,14 @@ class LandingFragment : BaseAPIFragment() {
         }
 
         binding.button.setOnClickListener {
-            apiViewModel.loadData()
+            GlobalScope.launch {
+                apiViewModel.loadData()
+//                try {
+//                    apiViewModel.loadData()
+//                } catch (e:Exception) {
+//                    Log.e("GET CARDS", e.toString())
+//                }
+            }
         }
 
         return binding.root

@@ -6,47 +6,48 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/backgroundColor">
+        android:background="?attr/backgroundColor"
+        tools:layout_editor_absoluteX="216dp"
+        tools:layout_editor_absoluteY="-15dp">
 
 
         <TextView
             android:id="@+id/welcome_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Welcome to the API Activity"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:text="@string/scryfall_welcome"
+            android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/user_info_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Welcome"
-            app:layout_constraintEnd_toEndOf="@+id/welcome_textview"
-            app:layout_constraintStart_toStartOf="@+id/welcome_textview"
-            app:layout_constraintTop_toBottomOf="@+id/welcome_textview" />
 
         <Button
             android:id="@+id/home_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Home"
-            app:layout_constraintEnd_toEndOf="@+id/welcome_textview"
-            app:layout_constraintStart_toStartOf="@+id/welcome_textview"
-            app:layout_constraintTop_toBottomOf="@+id/user_info_textview" />
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="24dp"
+            android:text="@string/back_to_main"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/home_button"
-            app:layout_constraintStart_toStartOf="@+id/home_button"
-            app:layout_constraintTop_toBottomOf="@+id/home_button" />
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="24dp"
+            android:text="@string/random_card"
+            app:layout_constraintBottom_toTopOf="@+id/home_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/welcome_textview" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
