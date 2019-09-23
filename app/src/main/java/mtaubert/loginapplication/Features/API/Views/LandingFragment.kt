@@ -48,12 +48,8 @@ class LandingFragment : BaseAPIFragment() {
 
         binding.button.setOnClickListener {
             GlobalScope.launch {
-                apiViewModel.loadData()
-//                try {
-//                    apiViewModel.loadData()
-//                } catch (e:Exception) {
-//                    Log.e("GET CARDS", e.toString())
-//                }
+                val cards = listOf(apiViewModel.getRandomCard())
+                (activity as APIActivity).showCards(cards)
             }
         }
 

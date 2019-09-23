@@ -23,9 +23,8 @@
     <!--    API Activity-->
     <string name="scryfall_welcome">Welcome the MTG card search.\nUses the Scryfall API to search</string>
     <string name="back_to_main">Return to main menu</string>
+    <string name="back_to_landing">Return to Scryfall landing</string>
     <string name="random_card">Random Card</string>
-
-
 
 
 </resources>

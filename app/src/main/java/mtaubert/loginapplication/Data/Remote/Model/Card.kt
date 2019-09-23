@@ -13,6 +13,7 @@ data class Card(
 //    val colors: ArrayList<String>,
 //    val color_identity: ArrayList<String>,
     val legalities: Legalities,
+    val image_uris: ImageUris,
     val set: String,
     val rarity: String,
     val artist: String
