@@ -1,7 +1,5 @@
 package mtaubert.loginapplication.Features.API.Views
 
-
-import android.graphics.Bitmap
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,12 +11,6 @@ import mtaubert.loginapplication.Data.Remote.Model.Card
 import mtaubert.loginapplication.R
 import mtaubert.loginapplication.Utils.Fragments.BaseAPIFragment
 import mtaubert.loginapplication.databinding.ApiFragmentOneCardViewBinding
-import android.graphics.BitmapFactory
-import android.provider.Settings
-import android.widget.Toast
-import kotlinx.coroutines.*
-import java.lang.Exception
-import java.net.URL
 
 
 /**
