@@ -26,7 +26,7 @@ class APIActivity: BaseActivity() {
         val fragment = if(cards.size == 1) {
             OneCardViewFragment.newInstance(cards[0])
         } else {
-            OneCardViewFragment.newInstance(cards[0])
+            MultiCardViewFragment.newInstance(cards)
         }
 
         supportFragmentManager

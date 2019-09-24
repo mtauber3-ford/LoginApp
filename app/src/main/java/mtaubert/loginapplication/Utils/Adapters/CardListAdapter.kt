@@ -19,6 +19,7 @@ class CardListAdapter internal constructor() : RecyclerView.Adapter<CardListAdap
         val tvName: TextView = cardView.findViewById(R.id.name_textview)
         val tvCMC: TextView = cardView.findViewById(R.id.cmc_textview)
         val tvType: TextView = cardView.findViewById(R.id.type_line_textview)
+        val tvNumber: TextView = cardView.findViewById(R.id.item_number)
     }
 
     private var cardList = emptyList<Card>() //List of current cards
@@ -47,6 +48,7 @@ class CardListAdapter internal constructor() : RecyclerView.Adapter<CardListAdap
         holder.tvName.text = current.name
         holder.tvCMC.text = "${current.mana_cost} ${current.cmc}"
         holder.tvType.text = current.type_line
+        holder.tvNumber.text = (position+1).toString()
 
 //        holder.itemView.setOnLongClickListener {
 //            longPress(position, it)

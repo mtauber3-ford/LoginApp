@@ -36,8 +36,12 @@ class APIViewModel(app: Application): AndroidViewModel(app) {
     }
 
     suspend fun getRandomCard(): Card{
-        val card = service.getRandomCard().await()
-        return card
+        return service.getRandomCard().await()
+    }
+
+    suspend fun searchForCards(searchString: String): List<Card> {
+        val scryfallList = service.getCardsNames(searchString).await()
+        return scryfallList.data
     }
 
     fun getCardImage(card: Card, imageView: ImageView) {

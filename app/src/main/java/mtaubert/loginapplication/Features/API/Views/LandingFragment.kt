@@ -53,6 +53,13 @@ class LandingFragment : BaseAPIFragment() {
             }
         }
 
+        binding.searchButton.setOnClickListener {
+            GlobalScope.launch {
+                val cards = apiViewModel.searchForCards("ana")
+                (activity as APIActivity).showCards(cards)
+            }
+        }
+
         return binding.root
     }
 }
