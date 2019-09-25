@@ -61,13 +61,26 @@ class LandingFragment : BaseAPIFragment() {
         binding.searchButton.setOnClickListener {
             val searchString = binding.searchEditText.text.toString()
             val searchType = binding.cardTypeSpinner.selectedItem.toString()
-            if(searchString.isBlank() && searchString.isEmpty() && searchType == "Any") {
+            val colorSelection = arrayOf(
+                binding.wCheckbox.isChecked,
+                binding.uCheckbox.isChecked,
+                binding.bCheckbox.isChecked,
+                binding.rCheckbox.isChecked,
+                binding.gCheckbox.isChecked,
+                binding.cCheckbox.isChecked
+            )
+            val colorSearchType = binding.spinner.selectedItemPosition
+
+            if(searchString.isBlank() && searchString.isEmpty() && searchType == "Any" && !colorSelection.contains(true)) {
                 Toast.makeText(activity, "Please enter something to search", Toast.LENGTH_LONG).show()
             } else {
                 try {
                     GlobalScope.launch {
                         val cards = apiViewModel.searchForCards(
-                           searchString, searchType
+                           searchString,
+                            searchType,
+                            colorSelection,
+                            colorSearchType
                         )
                         (activity as APIActivity).showCards(cards)
                     }

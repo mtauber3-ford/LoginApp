@@ -45,6 +45,15 @@
         <item>Tribal</item>
         <item>Vanguard</item>
     </string-array>
+    <string name="color">Colors</string>
+    <string name="color_search_option">Color search option</string>
+    <string-array name="color_search_options">
+        <item>Exactly these colors</item>
+        <item>Including these colors</item>
+        <item>At most these colors</item>
+    </string-array>
+
+
 
 
 </resources>

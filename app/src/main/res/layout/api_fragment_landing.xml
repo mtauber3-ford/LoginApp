@@ -48,7 +48,8 @@
             app:layout_constraintBottom_toTopOf="@+id/home_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/welcome_textview" />
+            app:layout_constraintTop_toBottomOf="@+id/welcome_textview"
+            app:layout_constraintVertical_bias="0.6" />
 
         <Button
             android:id="@+id/search_button"
@@ -81,13 +82,137 @@
             android:id="@+id/card_type_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
+            android:layout_marginBottom="16dp"
             android:dropDownWidth="wrap_content"
             android:entries="@array/card_types_array"
             android:spinnerMode="dropdown"
+            app:layout_constraintBottom_toTopOf="@+id/c_checkbox"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/card_type_textview" />
+
+        <TextView
+            android:id="@+id/card_type_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/card_type"
+            app:layout_constraintBottom_toBottomOf="@+id/card_type_spinner"
+            app:layout_constraintEnd_toStartOf="@+id/card_type_spinner"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/card_type_spinner" />
+
+        <TextView
+            android:id="@+id/colors_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/color"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/w_checkbox"
+            app:layout_constraintEnd_toStartOf="@+id/w_checkbox"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/w_checkbox" />
+
+        <CheckBox
+            android:id="@+id/w_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="W"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/u_checkbox"
+            app:layout_constraintEnd_toStartOf="@+id/u_checkbox"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/colors_textview"
+            app:layout_constraintTop_toTopOf="@+id/u_checkbox" />
+
+        <CheckBox
+            android:id="@+id/u_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="U"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/b_checkbox"
+            app:layout_constraintEnd_toStartOf="@+id/b_checkbox"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/w_checkbox"
+            app:layout_constraintTop_toTopOf="@+id/b_checkbox" />
+
+        <CheckBox
+            android:id="@+id/b_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="B"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/r_checkbox"
+            app:layout_constraintEnd_toStartOf="@+id/r_checkbox"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/u_checkbox"
+            app:layout_constraintTop_toTopOf="@+id/r_checkbox" />
+
+        <CheckBox
+            android:id="@+id/r_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="R"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/g_checkbox"
+            app:layout_constraintEnd_toStartOf="@+id/g_checkbox"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/b_checkbox"
+            app:layout_constraintTop_toTopOf="@+id/g_checkbox" />
+
+        <CheckBox
+            android:id="@+id/g_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="G"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/c_checkbox"
+            app:layout_constraintEnd_toStartOf="@+id/c_checkbox"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/r_checkbox"
+            app:layout_constraintTop_toTopOf="@+id/c_checkbox" />
+
+        <CheckBox
+            android:id="@+id/c_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:checked="false"
+            android:text="C"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@+id/spinner"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/g_checkbox" />
+
+        <TextView
+            android:id="@+id/color_search_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/color_search_option"
+            app:layout_constraintBottom_toBottomOf="@+id/spinner"
+            app:layout_constraintEnd_toStartOf="@+id/spinner"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/spinner" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:entries="@array/color_search_options"
             app:layout_constraintBottom_toTopOf="@+id/button"
-            app:layout_constraintEnd_toEndOf="@+id/button"
-            app:layout_constraintStart_toStartOf="@+id/button" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/color_search_textview" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

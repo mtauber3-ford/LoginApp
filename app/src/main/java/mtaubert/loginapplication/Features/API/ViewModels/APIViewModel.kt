@@ -18,9 +18,6 @@ import java.net.URLEncoder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 
-
-
-
 class APIViewModel(app: Application): AndroidViewModel(app) {
 
     private val apiModel = mtaubert.loginapplication.Features.API.Models.APIModel(null) //model for the login details
@@ -42,7 +39,7 @@ class APIViewModel(app: Application): AndroidViewModel(app) {
             .baseUrl(API_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
-            .client(httpClient.build())
+//            .client(httpClient.build())
             .build()
             .create(GetScryfallData::class.java)
 
@@ -52,7 +49,7 @@ class APIViewModel(app: Application): AndroidViewModel(app) {
         return service.getRandomCard().await()
     }
 
-    suspend fun searchForCards(searchString: String, searchType: String): List<Card> {
+    suspend fun searchForCards(searchString: String, searchType: String, colorSelection: Array<Boolean>, colorSearchType: Int): List<Card> {
         var encodedStrings = ""
         if(searchString.isNotEmpty() && searchString.isNotBlank()) {
             encodedStrings += URLEncoder.encode(searchString, "UTF-8")
@@ -63,6 +60,32 @@ class APIViewModel(app: Application): AndroidViewModel(app) {
                 encodedStrings += "+"
             }
             encodedStrings += "type:" + URLEncoder.encode(searchType, "UTF-8")
+        }
+
+        if(colorSelection.contains(true)) {
+            if(encodedStrings.isNotEmpty()) {
+                encodedStrings += "+"
+            }
+
+            val colors = arrayOf("W", "U", "B", "R", "G", "C")
+            var colorString = ""
+            for(i in colorSelection.indices) {
+                if(colorSelection[i]) {
+                    colorString += colors[i]
+                }
+            }
+
+            when(colorSearchType) {
+                0 -> { //exactly
+                    encodedStrings += "color=$colorString"
+                }
+                1 -> { //including
+                    encodedStrings += "color>=$colorString"
+                }
+                2 -> { //at most
+                    encodedStrings += "color<=$colorString"
+                }
+            }
         }
 
         Log.e("SEARCH STRING", encodedStrings)
