@@ -14,6 +14,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 import android.os.AsyncTask
 import android.util.Log
 import android.widget.ImageView
+import java.net.URLEncoder
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+
 
 
 
@@ -26,10 +30,19 @@ class APIViewModel(app: Application): AndroidViewModel(app) {
     private val API_URL = "https://api.scryfall.com/"
 
     init {
+        val logging = HttpLoggingInterceptor()
+    // set your desired log level
+            logging.level = HttpLoggingInterceptor.Level.BODY
+            val httpClient = OkHttpClient.Builder()
+    // add your other interceptors …
+    // add logging as last interceptor
+        httpClient.addInterceptor(logging)  // <-- this is the important line!
+
         service = Retrofit.Builder()
             .baseUrl(API_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
+            .client(httpClient.build())
             .build()
             .create(GetScryfallData::class.java)
 
@@ -39,8 +52,22 @@ class APIViewModel(app: Application): AndroidViewModel(app) {
         return service.getRandomCard().await()
     }
 
-    suspend fun searchForCards(searchString: String): List<Card> {
-        val scryfallList = service.getCardsNames(searchString).await()
+    suspend fun searchForCards(searchString: String, searchType: String): List<Card> {
+        var encodedStrings = ""
+        if(searchString.isNotEmpty() && searchString.isNotBlank()) {
+            encodedStrings += URLEncoder.encode(searchString, "UTF-8")
+        }
+
+        if(searchType != "Any") {
+            if(encodedStrings.isNotEmpty()) {
+                encodedStrings += "+"
+            }
+            encodedStrings += "type:" + URLEncoder.encode(searchType, "UTF-8")
+        }
+
+        Log.e("SEARCH STRING", encodedStrings)
+        val scryfallList = service.getCardsByName(encodedStrings).await()
+//        val scryfallList = service.searchForCards("https://api.scryfall.com/cards/search?q=$encodedStrings").await()
         return scryfallList.data
     }
 

@@ -15,7 +15,7 @@ class APIActivity: BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_activity_main)
-
+        actionBar?.title = "Scryfall Search"
         apiViewModel = ViewModelProviders.of(this).get(APIViewModel::class.java)
         apiViewModel.setCurrentUser(intent.extras?.get("currentUser") as User)
         changeFragment("landing")

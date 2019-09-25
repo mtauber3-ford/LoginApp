@@ -25,9 +25,26 @@
     <string name="back_to_main">Return to main menu</string>
     <string name="back_to_landing">Return to Scryfall landing</string>
     <string name="random_card">Random Card</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search_hint">Enter your search string</string>
+    <string name="card_type">Card type</string>
+    <string-array name="card_types_array">
+        <item>Any</item>
+        <item>Artifact</item>
+        <item>Conspiracy</item>
+        <item>Creature</item>
+        <item>Emblem</item>
+        <item>Enchantment</item>
+        <item>Hero</item>
+        <item>Instant</item>
+        <item>Land</item>
+        <item>Phenomenon</item>
+        <item>Plane</item>
+        <item>Planeswalker</item>
+        <item>Scheme</item>
+        <item>Sorcery</item>
+        <item>Tribal</item>
+        <item>Vanguard</item>
+    </string-array>
 
 
 </resources>

@@ -37,6 +37,10 @@ class MultiCardViewFragment(private val cards: List<Card>) : BaseAPIFragment() {
 
         showCards(binding)
 
+        binding.landingButton.setOnClickListener {
+            (activity as APIActivity).changeFragment("landing")
+        }
+
         return binding.root
     }
 
