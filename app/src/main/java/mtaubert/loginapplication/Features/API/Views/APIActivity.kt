@@ -22,6 +22,18 @@ class APIActivity: BaseActivity() {
 
     }
 
+    fun contextualBackButtonPressed() {
+        if(apiViewModel.getCurrentSearch() != null) {
+            showCards(apiViewModel.getCurrentSearch()!!.data)
+        } else {
+            apiViewModel.clearSearchCache()
+            changeFragment("landing")
+        }
+    }
+
+    /**
+     * Loads either card view to show one or a list of cards to the user
+     */
     fun showCards(cards:List<Card>) {
         val fragment = if(cards.size == 1) {
             OneCardViewFragment.newInstance(cards[0])
@@ -35,6 +47,9 @@ class APIActivity: BaseActivity() {
             .commit()
     }
 
+    /**
+     * Generic fragment changing
+     */
     fun changeFragment(target: String) {
         val fragment = when(target) {
             "landing" -> LandingFragment.newInstance()

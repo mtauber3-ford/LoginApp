@@ -36,7 +36,7 @@ class OneCardViewFragment(val card: Card) : BaseAPIFragment() {
         )
 
         binding.backToLandingButton.setOnClickListener {
-            (activity as APIActivity).changeFragment("landing")
+            (activity as APIActivity).contextualBackButtonPressed()
         }
 
         showCard(binding)

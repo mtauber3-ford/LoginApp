@@ -14,13 +14,15 @@ import retrofit2.converter.gson.GsonConverterFactory
 import android.os.AsyncTask
 import android.util.Log
 import android.widget.ImageView
+import mtaubert.loginapplication.Data.Remote.Model.ScryfallCardList
+import mtaubert.loginapplication.Features.API.Models.APIModel
 import java.net.URLEncoder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 
 class APIViewModel(app: Application): AndroidViewModel(app) {
 
-    private val apiModel = mtaubert.loginapplication.Features.API.Models.APIModel(null) //model for the login details
+    private val apiModel = APIModel() //model for the login details
     private var db: UserRoomDatabase = UserRoomDatabase.getInstance(app) //Database used for user info
 
     private var service: GetScryfallData
@@ -45,8 +47,28 @@ class APIViewModel(app: Application): AndroidViewModel(app) {
 
     }
 
+    fun clearSearchCache()
+    {
+        apiModel.lastCardInspected = null
+        apiModel.lastCardSearchResult = null
+        apiModel.lastScryfallSearchQuery = null
+    }
+
+    fun getCurrentCard(): Card? {
+        return apiModel.lastCardInspected
+    }
+
+    fun getCurrentSearch(): ScryfallCardList? {
+        return apiModel.lastCardSearchResult
+    }
+
+    fun getLastSearchQuery(): String? {
+        return apiModel.lastScryfallSearchQuery
+    }
+
     suspend fun getRandomCard(): Card{
-        return service.getRandomCard().await()
+        apiModel.lastCardInspected = service.getRandomCard().await()
+        return apiModel.lastCardInspected!!
     }
 
     suspend fun searchForCards(searchString: String, searchType: String, colorSelection: Array<Boolean>, colorSearchType: Int): List<Card> {
@@ -90,7 +112,11 @@ class APIViewModel(app: Application): AndroidViewModel(app) {
 
         Log.e("SEARCH STRING", encodedStrings)
         val scryfallList = service.getCardsByName(encodedStrings).await()
-//        val scryfallList = service.searchForCards("https://api.scryfall.com/cards/search?q=$encodedStrings").await()
+
+        //Cache results
+        apiModel.lastScryfallSearchQuery = encodedStrings
+        apiModel.lastCardSearchResult = scryfallList
+
         return scryfallList.data
     }
 

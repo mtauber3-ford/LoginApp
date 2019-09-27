@@ -12,16 +12,21 @@ import mtaubert.loginapplication.Data.Remote.Model.Card
 
 import mtaubert.loginapplication.R
 import mtaubert.loginapplication.Utils.Adapters.CardListAdapter
+import mtaubert.loginapplication.Utils.CardItemClickListener
 import mtaubert.loginapplication.Utils.Fragments.BaseAPIFragment
 import mtaubert.loginapplication.databinding.ApiFragmentMultiCardViewBinding
 import mtaubert.loginapplication.databinding.ApiFragmentOneCardViewBinding
 
-class MultiCardViewFragment(private val cards: List<Card>) : BaseAPIFragment() {
+class MultiCardViewFragment(private val cards: List<Card>) : BaseAPIFragment(), CardItemClickListener {
 
     companion object {
         fun newInstance(cards: List<Card>): MultiCardViewFragment {
             return MultiCardViewFragment(cards)
         }
+    }
+
+    override fun viewCard(card: Card) {
+        (activity as APIActivity).showCards(listOf(card))
     }
 
     override fun onCreateView(
@@ -46,11 +51,10 @@ class MultiCardViewFragment(private val cards: List<Card>) : BaseAPIFragment() {
 
     private fun showCards(binding: ApiFragmentMultiCardViewBinding) {
         val cardRecycleListView = binding.recyclerView
-        val cardAdapter = CardListAdapter()
+        val cardAdapter = CardListAdapter { card:Card -> viewCard(card)}
         cardRecycleListView.adapter = cardAdapter
         cardRecycleListView.layoutManager = LinearLayoutManager(context!!)
         cardAdapter.setCards(cards)
-
     }
 
 

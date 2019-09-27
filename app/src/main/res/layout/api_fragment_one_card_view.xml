@@ -13,11 +13,12 @@
             android:layout_width="388dp"
             android:layout_height="408dp"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="24dp"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_launcher_background"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.48"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/placeholder_small" />
@@ -36,13 +37,10 @@
             android:id="@+id/cmc_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
             android:text="TextView"
-            android:textAlignment="textEnd"
+            android:textAlignment="viewStart"
             app:layout_constraintBottom_toBottomOf="@+id/name_textview"
             app:layout_constraintEnd_toEndOf="@+id/imageView"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/name_textview"
             app:layout_constraintTop_toTopOf="@+id/name_textview" />
 
         <TextView
