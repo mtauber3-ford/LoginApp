@@ -23,7 +23,7 @@ class APIActivity: BaseActivity() {
     }
 
     fun contextualBackButtonPressed() {
-        if(apiViewModel.getCurrentSearch() != null) {
+        if(apiViewModel.getCurrentSearch() != null && apiViewModel.getCurrentSearch()!!.data.size != 1) {
             showCards(apiViewModel.getCurrentSearch()!!.data)
         } else {
             apiViewModel.clearSearchCache()

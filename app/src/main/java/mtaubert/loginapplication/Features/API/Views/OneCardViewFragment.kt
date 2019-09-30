@@ -44,7 +44,6 @@ class OneCardViewFragment(val card: Card) : BaseAPIFragment() {
 
         if(favorite) {
             binding.imageButton.setImageResource(R.drawable.heart_2)
-            favorite = !favorite
         }
 
         binding.backToLandingButton.setOnClickListener {

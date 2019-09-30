@@ -165,11 +165,10 @@ class APIViewModel(app: Application): AndroidViewModel(app) {
         Log.e("CURRENT USER", getCurrentUser()!!.email)
         Log.e("CURRENT CARD", getCurrentCard()!!.name)
 
-        val newFavorite = Favorites(0, getCurrentUser()!!.email, getCurrentCard()!!.id, gson.toJson(getCurrentCard()!!))
-
         if(isCurrentCardAFavorite()) {
-            db.favDao().deleteFavorite(newFavorite)
+            db.favDao().deleteFavorite(getCurrentUser()!!.email, getCurrentCard()!!.id)
         } else {
+            val newFavorite = Favorites(0, getCurrentUser()!!.email, getCurrentCard()!!.id, gson.toJson(getCurrentCard()!!))
             db.favDao().insert(newFavorite)
         }
         apiModel.currentUserFavorites =  db.favDao().getUserFavorites(getCurrentUser()!!.email)
@@ -177,7 +176,7 @@ class APIViewModel(app: Application): AndroidViewModel(app) {
 
     suspend fun clearAllFavorites() {
         for(fav:Favorites in db.favDao().getUserFavorites(getCurrentUser()!!.email)) {
-            db.favDao().deleteFavorite(fav)
+            db.favDao().deleteFavorite(fav.userEmail, fav.favCardId)
         }
         apiModel.currentUserFavorites =  db.favDao().getUserFavorites(getCurrentUser()!!.email)
     }
