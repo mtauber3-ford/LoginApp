@@ -45,6 +45,7 @@ class APIActivity: BaseActivity() {
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.root_layout, fragment, "cards")
+            .addToBackStack(null)
             .commit()
     }
 
@@ -54,7 +55,6 @@ class APIActivity: BaseActivity() {
     fun changeFragment(target: String) {
         val fragment = when(target) {
             "landing" -> LandingFragment.newInstance()
-            //"oneCard" -> OneCardViewFragment.newInstance()
             else -> LandingFragment.newInstance()
         }
 
