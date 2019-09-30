@@ -47,6 +47,19 @@ class LandingFragment : BaseAPIFragment() {
             startActivity(intent)
         }
 
+        binding.favoritesButton.setOnClickListener {
+            GlobalScope.launch {
+                val cards = apiViewModel.getUserFavorites()
+                (activity as APIActivity).showCards(cards!!)
+            }
+        }
+
+        binding.clearFavoritesButton.setOnClickListener {
+            GlobalScope.launch {
+                apiViewModel.clearAllFavorites()
+            }
+        }
+
         binding.button.setOnClickListener {
             try {
                 GlobalScope.launch {

@@ -52,6 +52,7 @@
         <item>Including these colors</item>
         <item>At most these colors</item>
     </string-array>
+    <string name="favorites">Favorites</string>
 
 
 

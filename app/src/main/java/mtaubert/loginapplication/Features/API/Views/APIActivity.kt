@@ -36,6 +36,7 @@ class APIActivity: BaseActivity() {
      */
     fun showCards(cards:List<Card>) {
         val fragment = if(cards.size == 1) {
+            apiViewModel.setCurrentCard(cards[0])
             OneCardViewFragment.newInstance(cards[0])
         } else {
             MultiCardViewFragment.newInstance(cards)

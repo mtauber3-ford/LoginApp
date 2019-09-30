@@ -14,11 +14,14 @@ import retrofit2.converter.gson.GsonConverterFactory
 import android.os.AsyncTask
 import android.util.Log
 import android.widget.ImageView
+import com.google.gson.Gson
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import mtaubert.loginapplication.Data.DB.Model.Favorites
 import mtaubert.loginapplication.Data.Remote.Model.ScryfallCardList
 import mtaubert.loginapplication.Features.API.Models.APIModel
 import java.net.URLEncoder
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
+
 
 class APIViewModel(app: Application): AndroidViewModel(app) {
 
@@ -26,22 +29,15 @@ class APIViewModel(app: Application): AndroidViewModel(app) {
     private var db: UserRoomDatabase = UserRoomDatabase.getInstance(app) //Database used for user info
 
     private var service: GetScryfallData
+    private val gson: Gson = Gson()
+
     private val API_URL = "https://api.scryfall.com/"
 
     init {
-        val logging = HttpLoggingInterceptor()
-    // set your desired log level
-            logging.level = HttpLoggingInterceptor.Level.BODY
-            val httpClient = OkHttpClient.Builder()
-    // add your other interceptors …
-    // add logging as last interceptor
-        httpClient.addInterceptor(logging)  // <-- this is the important line!
-
         service = Retrofit.Builder()
             .baseUrl(API_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
-//            .client(httpClient.build())
             .build()
             .create(GetScryfallData::class.java)
 
@@ -56,6 +52,10 @@ class APIViewModel(app: Application): AndroidViewModel(app) {
 
     fun getCurrentCard(): Card? {
         return apiModel.lastCardInspected
+    }
+
+    fun setCurrentCard(card:Card) {
+        apiModel.lastCardInspected = card
     }
 
     fun getCurrentSearch(): ScryfallCardList? {
@@ -136,6 +136,50 @@ class APIViewModel(app: Application): AndroidViewModel(app) {
      */
     fun setCurrentUser(currentUser: User) {
         apiModel.currentUser = currentUser
+        GlobalScope.launch {
+            apiModel.currentUserFavorites =  db.favDao().getUserFavorites(getCurrentUser()!!.email)
+        }
+    }
+
+    fun getUserFavorites(): List<Card>? {
+        var favoriteCardsList: ArrayList<Card> = ArrayList()
+        if(!apiModel.currentUserFavorites.isNullOrEmpty()) {
+            for(fav:Favorites in apiModel.currentUserFavorites!!) {
+                favoriteCardsList.add(gson.fromJson(fav.cardJson, Card::class.java))
+            }
+        }
+        apiModel.lastCardSearchResult = ScryfallCardList(favoriteCardsList.size, false, "", favoriteCardsList)
+        return favoriteCardsList
+    }
+
+    fun isCurrentCardAFavorite():Boolean {
+        for(fav:Favorites in apiModel.currentUserFavorites!!) {
+            if(apiModel.lastCardInspected!!.id == fav.favCardId) {
+                return true
+            }
+        }
+        return false
+    }
+
+    suspend fun favoriteCurrentCard(){
+        Log.e("CURRENT USER", getCurrentUser()!!.email)
+        Log.e("CURRENT CARD", getCurrentCard()!!.name)
+
+        val newFavorite = Favorites(0, getCurrentUser()!!.email, getCurrentCard()!!.id, gson.toJson(getCurrentCard()!!))
+
+        if(isCurrentCardAFavorite()) {
+            db.favDao().deleteFavorite(newFavorite)
+        } else {
+            db.favDao().insert(newFavorite)
+        }
+        apiModel.currentUserFavorites =  db.favDao().getUserFavorites(getCurrentUser()!!.email)
+    }
+
+    suspend fun clearAllFavorites() {
+        for(fav:Favorites in db.favDao().getUserFavorites(getCurrentUser()!!.email)) {
+            db.favDao().deleteFavorite(fav)
+        }
+        apiModel.currentUserFavorites =  db.favDao().getUserFavorites(getCurrentUser()!!.email)
     }
 
     private inner class DownloadCardImage(internal var imageView: ImageView) :
