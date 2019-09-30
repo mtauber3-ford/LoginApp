@@ -110,6 +110,19 @@
                     app:layout_constraintTop_toBottomOf="@+id/oracle_text_textview"
                     app:srcCompat="@drawable/heart" />
 
+                <LinearLayout
+                    android:id="@+id/manaSymbolLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:gravity="right"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="@+id/cmc_textview"
+                    app:layout_constraintEnd_toStartOf="@+id/cmc_textview"
+                    app:layout_constraintStart_toEndOf="@+id/name_textview"
+                    app:layout_constraintTop_toTopOf="@+id/cmc_textview"></LinearLayout>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 

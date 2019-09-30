@@ -40,28 +40,25 @@
             android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginBottom="24dp"
+            android:layout_marginTop="16dp"
             android:text="@string/random_card"
-            app:layout_constraintBottom_toTopOf="@+id/home_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/welcome_textview"
-            app:layout_constraintVertical_bias="0.6" />
+            app:layout_constraintEnd_toEndOf="@+id/search_button"
+            app:layout_constraintStart_toStartOf="@+id/search_button"
+            app:layout_constraintTop_toBottomOf="@+id/search_button" />
 
         <Button
             android:id="@+id/search_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:text="@android:string/search_go"
-            app:layout_constraintBottom_toTopOf="@+id/card_type_spinner"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/search_edit_text" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/search_edit_text"
@@ -69,14 +66,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
             android:ems="10"
             android:inputType="textPersonName"
-            app:layout_constraintBottom_toBottomOf="@+id/search_button"
-            app:layout_constraintEnd_toStartOf="@+id/search_button"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/search_button"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintBottom_toTopOf="@+id/card_type_spinner"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Spinner
             android:id="@+id/card_type_spinner"
@@ -207,9 +202,9 @@
             android:id="@+id/spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
+            android:layout_marginBottom="48dp"
             android:entries="@array/color_search_options"
-            app:layout_constraintBottom_toTopOf="@+id/favorites_button"
+            app:layout_constraintBottom_toTopOf="@+id/search_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/color_search_textview" />
@@ -218,11 +213,11 @@
             android:id="@+id/favorites_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
             android:text="@string/favorites"
-            app:layout_constraintBottom_toTopOf="@+id/button"
             app:layout_constraintEnd_toEndOf="@+id/button"
-            app:layout_constraintStart_toStartOf="@+id/button" />
+            app:layout_constraintStart_toStartOf="@+id/button"
+            app:layout_constraintTop_toBottomOf="@+id/button" />
 
         <Button
             android:id="@+id/clear_favorites_button"
@@ -230,6 +225,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="Clear Favs"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/favorites_button"
             app:layout_constraintStart_toEndOf="@+id/favorites_button"
             app:layout_constraintTop_toTopOf="@+id/favorites_button"
