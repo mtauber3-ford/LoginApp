@@ -139,7 +139,7 @@ class OneCardViewFragment(val card: Card) : BaseAPIFragment() {
                 "{G/P}" -> newSymbol.setImageResource(R.drawable.ic_gp)
                 "{S}" -> newSymbol.setImageResource(R.drawable.ic_s)
                 "{X}" -> newSymbol.setImageResource(R.drawable.ic_x)
-                 else -> newSymbol.setImageResource(R.drawable.ic_w)
+                 else -> newSymbol.setImageResource(R.drawable.ic_c)
             }
 
             manaCost = manaCost.substring(manaCost.indexOf("}")+1)

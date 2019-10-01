@@ -125,6 +125,9 @@ class APIViewModel(app: Application): AndroidViewModel(app) {
     }
 
     /**
+     * CURRENT USER GETTER AND SETTER
+     */
+    /**
      * Returns the current logged in user
      */
     fun getCurrentUser(): User? {
@@ -141,6 +144,9 @@ class APIViewModel(app: Application): AndroidViewModel(app) {
         }
     }
 
+    /**
+     * FAVORITES
+     */
     fun getUserFavorites(): List<Card>? {
         var favoriteCardsList: ArrayList<Card> = ArrayList()
         if(!apiModel.currentUserFavorites.isNullOrEmpty()) {
@@ -162,9 +168,6 @@ class APIViewModel(app: Application): AndroidViewModel(app) {
     }
 
     suspend fun favoriteCurrentCard(){
-        Log.e("CURRENT USER", getCurrentUser()!!.email)
-        Log.e("CURRENT CARD", getCurrentCard()!!.name)
-
         if(isCurrentCardAFavorite()) {
             db.favDao().deleteFavorite(getCurrentUser()!!.email, getCurrentCard()!!.id)
         } else {
