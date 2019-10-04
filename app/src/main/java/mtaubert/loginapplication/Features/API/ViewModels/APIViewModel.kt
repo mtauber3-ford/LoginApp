@@ -21,6 +21,8 @@ import mtaubert.loginapplication.Data.DB.Model.Favorites
 import mtaubert.loginapplication.Data.Remote.Model.ScryfallCardList
 import mtaubert.loginapplication.Features.API.Models.APIModel
 import java.net.URLEncoder
+import okhttp3.OkHttpClient
+import mtaubert.loginapplication.Utils.ConnectionInterceptor
 
 
 class APIViewModel(app: Application): AndroidViewModel(app) {
@@ -34,15 +36,23 @@ class APIViewModel(app: Application): AndroidViewModel(app) {
     private val API_URL = "https://api.scryfall.com/"
 
     init {
+        val oktHttpClient = OkHttpClient.Builder()
+            .addInterceptor(ConnectionInterceptor(app.applicationContext))
+
         service = Retrofit.Builder()
             .baseUrl(API_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
+            .client(oktHttpClient.build())
             .build()
             .create(GetScryfallData::class.java)
-
     }
 
+
+
+    /**
+     * CARD SEARCHES
+     */
     fun clearSearchCache()
     {
         apiModel.lastCardInspected = null
@@ -71,7 +81,7 @@ class APIViewModel(app: Application): AndroidViewModel(app) {
         return apiModel.lastCardInspected!!
     }
 
-    suspend fun searchForCards(searchString: String, searchType: String, colorSelection: Array<Boolean>, colorSearchType: Int): List<Card> {
+    suspend fun searchForCards(searchString: String, searchType: String, colorSelection: Array<Boolean>, colorSearchType: Int, formatSearch: Int): List<Card> {
         var encodedStrings = ""
         if(searchString.isNotEmpty() && searchString.isNotBlank()) {
             encodedStrings += URLEncoder.encode(searchString, "UTF-8")
@@ -108,6 +118,14 @@ class APIViewModel(app: Application): AndroidViewModel(app) {
                     encodedStrings += "color<=$colorString"
                 }
             }
+        }
+
+        if(formatSearch != 0) {
+            val formats = arrayOf(
+                "standard","future", "modern", "legacy", "pauper", "vintage", "penny", "commander", "brawl", "duel", "oldschool"
+            )
+
+            encodedStrings += "legal:${formats[formatSearch-1]}"
         }
 
         Log.e("SEARCH STRING", encodedStrings)

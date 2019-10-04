@@ -48,6 +48,7 @@ class LandingFragment : BaseAPIFragment() {
         }
 
         binding.favoritesButton.setOnClickListener {
+            apiViewModel.clearSearchCache()
             GlobalScope.launch {
                 val cards = apiViewModel.getUserFavorites()
                 (activity as APIActivity).showCards(cards!!)
@@ -61,6 +62,7 @@ class LandingFragment : BaseAPIFragment() {
         }
 
         binding.button.setOnClickListener {
+            apiViewModel.clearSearchCache()
             try {
                 GlobalScope.launch {
                     val cards = listOf(apiViewModel.getRandomCard())
@@ -72,6 +74,7 @@ class LandingFragment : BaseAPIFragment() {
         }
 
         binding.searchButton.setOnClickListener {
+            apiViewModel.clearSearchCache()
             val searchString = binding.searchEditText.text.toString()
             val searchType = binding.cardTypeSpinner.selectedItem.toString()
             val colorSelection = arrayOf(
@@ -82,9 +85,10 @@ class LandingFragment : BaseAPIFragment() {
                 binding.gCheckbox.isChecked,
                 binding.cCheckbox.isChecked
             )
-            val colorSearchType = binding.spinner.selectedItemPosition
+            val colorSearchType = binding.colorOptionSpinner.selectedItemPosition
+            val formatSearch = binding.formatOptionSpinner.selectedItemPosition
 
-            if(searchString.isBlank() && searchString.isEmpty() && searchType == "Any" && !colorSelection.contains(true)) {
+            if(searchString.isBlank() && searchString.isEmpty() && searchType == "Any" && !colorSelection.contains(true) && formatSearch == 0) {
                 Toast.makeText(activity, "Please enter something to search", Toast.LENGTH_LONG).show()
             } else {
                 try {
@@ -93,7 +97,8 @@ class LandingFragment : BaseAPIFragment() {
                            searchString,
                             searchType,
                             colorSelection,
-                            colorSearchType
+                            colorSearchType,
+                            formatSearch
                         )
                         (activity as APIActivity).showCards(cards)
                     }

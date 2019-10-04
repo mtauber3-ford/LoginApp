@@ -53,6 +53,21 @@
         <item>At most these colors</item>
     </string-array>
     <string name="favorites">Favorites</string>
+    <string name="format">Format</string>
+    <string-array name="format_array">
+        <item>Any</item>
+        <item>Standard</item>
+        <item>Future</item>
+        <item>Modern</item>
+        <item>Legacy</item>
+        <item>Pauper</item>
+        <item>Vintage</item>
+        <item>Penny</item>
+        <item>Commander</item>
+        <item>Brawl</item>
+        <item>Duel</item>
+        <item>Old School</item>
+    </string-array>
 
 
 
