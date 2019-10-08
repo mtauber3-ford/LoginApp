@@ -16,7 +16,7 @@
     <string name="delete_account">Delete Account</string>
     <string name="welcome_message">Welcome back </string>
     <string name="account_details">View Account Details</string>
-    <string name="api_activity">Go to API Activity</string>
+    <string name="api_activity">Search with Scryfall</string>
     <string name="TBA">TBA</string>
     <string name="dark_mode">Dark Mode</string>
 

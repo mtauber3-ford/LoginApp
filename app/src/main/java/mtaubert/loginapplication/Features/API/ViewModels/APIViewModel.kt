@@ -76,6 +76,18 @@ class APIViewModel(app: Application): AndroidViewModel(app) {
         return apiModel.lastScryfallSearchQuery
     }
 
+    fun hasNextSetOfCards(): Boolean {
+        return apiModel.lastCardSearchResult!!.has_more
+    }
+
+    fun hasPreviousSetOfCards(): Boolean {
+        return true
+    }
+
+    fun getTotalNumberOfResults(): Int {
+        return apiModel.lastCardSearchResult!!.total_cards
+    }
+
     suspend fun getRandomCard(): Card{
         apiModel.lastCardInspected = service.getRandomCard().await()
         return apiModel.lastCardInspected!!

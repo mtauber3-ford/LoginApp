@@ -41,6 +41,16 @@ class MultiCardViewFragment(private val cards: List<Card>) : BaseAPIFragment(), 
             false
         )
 
+        binding.tvCardTotal.text = apiViewModel.getTotalNumberOfResults().toString()
+
+        if(!apiViewModel.hasNextSetOfCards()) {
+            binding.nextButton.visibility = View.INVISIBLE
+        }
+
+        if(!apiViewModel.hasPreviousSetOfCards()) {
+            binding.backButton.visibility = View.INVISIBLE
+        }
+
         if(cards.isNullOrEmpty()) {
             Toast.makeText(context, "No cards found!", Toast.LENGTH_LONG).show()
         }
