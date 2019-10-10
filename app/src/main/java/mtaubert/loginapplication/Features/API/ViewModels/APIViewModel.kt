@@ -35,6 +35,8 @@ class APIViewModel(app: Application): AndroidViewModel(app) {
 
     private val API_URL = "https://api.scryfall.com/"
 
+    private var currentPage = 0
+
     init {
         val oktHttpClient = OkHttpClient.Builder()
             .addInterceptor(ConnectionInterceptor(app.applicationContext))
@@ -55,42 +57,67 @@ class APIViewModel(app: Application): AndroidViewModel(app) {
      */
     fun clearSearchCache()
     {
-        apiModel.lastCardInspected = null
-        apiModel.lastCardSearchResult = null
-        apiModel.lastScryfallSearchQuery = null
+        apiModel.currentCard = null
+        apiModel.currentSearchResult.clear()
+        apiModel.currentSearchQuery = null
+        currentPage = 0
     }
 
     fun getCurrentCard(): Card? {
-        return apiModel.lastCardInspected
+        return apiModel.currentCard
     }
 
     fun setCurrentCard(card:Card) {
-        apiModel.lastCardInspected = card
+        apiModel.currentCard = card
     }
 
     fun getCurrentSearch(): ScryfallCardList? {
-        return apiModel.lastCardSearchResult
+        if(apiModel.currentSearchResult.size > 0){
+            return apiModel.currentSearchResult[currentPage]
+        } else {
+            return null
+        }
     }
 
     fun getLastSearchQuery(): String? {
-        return apiModel.lastScryfallSearchQuery
+        return apiModel.currentSearchQuery
     }
 
     fun hasNextSetOfCards(): Boolean {
-        return apiModel.lastCardSearchResult!!.has_more
+        return apiModel.currentSearchResult[currentPage]!!.has_more
     }
 
     fun hasPreviousSetOfCards(): Boolean {
-        return true
+        return currentPage > 0
     }
 
     fun getTotalNumberOfResults(): Int {
-        return apiModel.lastCardSearchResult!!.total_cards
+        return apiModel.currentSearchResult[currentPage]!!.total_cards
+    }
+
+    fun getCurrentPage(): Int {
+        return currentPage
+    }
+
+    suspend fun getNextPageOfResults(change: Int): List<Card> {
+        val nextPage = currentPage + change
+        if(apiModel.currentSearchResult.size <= nextPage) {
+            val scryfallList = service.getCardsByWholeURL(apiModel.currentSearchResult[currentPage]!!.next_page).await()
+
+            //Cache results
+            apiModel.currentSearchResult.add(scryfallList)
+            currentPage = nextPage
+
+            return scryfallList.data
+        } else {
+            currentPage = nextPage
+            return apiModel.currentSearchResult[nextPage]!!.data
+        }
     }
 
     suspend fun getRandomCard(): Card{
-        apiModel.lastCardInspected = service.getRandomCard().await()
-        return apiModel.lastCardInspected!!
+        apiModel.currentCard = service.getRandomCard().await()
+        return apiModel.currentCard!!
     }
 
     suspend fun searchForCards(searchString: String, searchType: String, colorSelection: Array<Boolean>, colorSearchType: Int, formatSearch: Int): List<Card> {
@@ -133,6 +160,9 @@ class APIViewModel(app: Application): AndroidViewModel(app) {
         }
 
         if(formatSearch != 0) {
+            if(encodedStrings.isNotEmpty()) {
+                encodedStrings += "+"
+            }
             val formats = arrayOf(
                 "standard","future", "modern", "legacy", "pauper", "vintage", "penny", "commander", "brawl", "duel", "oldschool"
             )
@@ -144,8 +174,8 @@ class APIViewModel(app: Application): AndroidViewModel(app) {
         val scryfallList = service.getCardsByName(encodedStrings).await()
 
         //Cache results
-        apiModel.lastScryfallSearchQuery = encodedStrings
-        apiModel.lastCardSearchResult = scryfallList
+        apiModel.currentSearchQuery = encodedStrings
+        apiModel.currentSearchResult.add(scryfallList)
 
         return scryfallList.data
     }
@@ -178,19 +208,21 @@ class APIViewModel(app: Application): AndroidViewModel(app) {
      * FAVORITES
      */
     fun getUserFavorites(): List<Card>? {
-        var favoriteCardsList: ArrayList<Card> = ArrayList()
+        val favoriteCardsList: ArrayList<Card> = ArrayList()
         if(!apiModel.currentUserFavorites.isNullOrEmpty()) {
             for(fav:Favorites in apiModel.currentUserFavorites!!) {
                 favoriteCardsList.add(gson.fromJson(fav.cardJson, Card::class.java))
             }
         }
-        apiModel.lastCardSearchResult = ScryfallCardList(favoriteCardsList.size, false, "", favoriteCardsList)
+        currentPage = 0
+        apiModel.currentSearchResult.clear()
+        apiModel.currentSearchResult.add(ScryfallCardList(favoriteCardsList.size, false, "", favoriteCardsList))
         return favoriteCardsList
     }
 
     fun isCurrentCardAFavorite():Boolean {
         for(fav:Favorites in apiModel.currentUserFavorites!!) {
-            if(apiModel.lastCardInspected!!.id == fav.favCardId) {
+            if(apiModel.currentCard!!.id == fav.favCardId) {
                 return true
             }
         }

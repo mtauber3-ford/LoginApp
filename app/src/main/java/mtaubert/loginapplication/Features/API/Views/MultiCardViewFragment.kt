@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import mtaubert.loginapplication.Data.Remote.Model.Card
 
 import mtaubert.loginapplication.R
@@ -18,7 +20,9 @@ import mtaubert.loginapplication.Utils.Fragments.BaseAPIFragment
 import mtaubert.loginapplication.databinding.ApiFragmentMultiCardViewBinding
 import mtaubert.loginapplication.databinding.ApiFragmentOneCardViewBinding
 
-class MultiCardViewFragment(private val cards: List<Card>) : BaseAPIFragment(), CardItemClickListener {
+class MultiCardViewFragment(private var cards: List<Card>) : BaseAPIFragment(), CardItemClickListener {
+
+    lateinit var binding:ApiFragmentMultiCardViewBinding
 
     companion object {
         fun newInstance(cards: List<Card>): MultiCardViewFragment {
@@ -34,7 +38,7 @@ class MultiCardViewFragment(private val cards: List<Card>) : BaseAPIFragment(), 
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = DataBindingUtil.inflate<ApiFragmentMultiCardViewBinding>(
+            binding = DataBindingUtil.inflate<ApiFragmentMultiCardViewBinding>(
             inflater,
             R.layout.api_fragment_multi_card_view,
             container,
@@ -43,19 +47,20 @@ class MultiCardViewFragment(private val cards: List<Card>) : BaseAPIFragment(), 
 
         binding.tvCardTotal.text = apiViewModel.getTotalNumberOfResults().toString()
 
-        if(!apiViewModel.hasNextSetOfCards()) {
-            binding.nextButton.visibility = View.INVISIBLE
+        binding.nextButton.setOnClickListener {
+            changePage(1)
         }
 
-        if(!apiViewModel.hasPreviousSetOfCards()) {
-            binding.backButton.visibility = View.INVISIBLE
+        binding.backButton.setOnClickListener {
+            changePage(-1)
         }
 
         if(cards.isNullOrEmpty()) {
             Toast.makeText(context, "No cards found!", Toast.LENGTH_LONG).show()
         }
 
-        showCards(binding)
+        showButtons()
+        showCards()
 
         binding.landingButton.setOnClickListener {
             (activity as APIActivity).changeFragment("landing")
@@ -64,7 +69,31 @@ class MultiCardViewFragment(private val cards: List<Card>) : BaseAPIFragment(), 
         return binding.root
     }
 
-    private fun showCards(binding: ApiFragmentMultiCardViewBinding) {
+    private fun showButtons() {
+        if(!apiViewModel.hasNextSetOfCards()) {
+            binding.nextButton.visibility = View.INVISIBLE
+        } else {
+            binding.nextButton.visibility = View.VISIBLE
+        }
+
+        if(!apiViewModel.hasPreviousSetOfCards()) {
+            binding.backButton.visibility = View.INVISIBLE
+        } else {
+            binding.backButton.visibility = View.VISIBLE
+        }
+    }
+
+    private fun changePage(change: Int) = GlobalScope.launch {
+        val newCards = apiViewModel.getNextPageOfResults(change)
+        (activity as APIActivity).runOnUiThread {
+            cards = newCards
+            showButtons()
+            showCards()
+//            Toast.makeText(context, apiViewModel.getCurrentPage().toString(), Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun showCards() {
         val cardRecycleListView = binding.recyclerView
         val cardAdapter = CardListAdapter { card:Card -> viewCard(card)}
         cardRecycleListView.adapter = cardAdapter

@@ -8,7 +8,7 @@ import mtaubert.loginapplication.Data.Remote.Model.ScryfallCardList
 data class APIModel(
     var currentUser: User? = null,
     var currentUserFavorites: List<Favorites>? = null,
-    var lastCardSearchResult: ScryfallCardList? = null,
-    var lastScryfallSearchQuery: String? = null,
-    var lastCardInspected: Card? = null
+    var currentSearchResult: MutableList<ScryfallCardList?> = mutableListOf(),
+    var currentSearchQuery: String? = null,
+    var currentCard: Card? = null
 )

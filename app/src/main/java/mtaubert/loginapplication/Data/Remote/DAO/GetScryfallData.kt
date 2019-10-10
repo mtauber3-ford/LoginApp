@@ -15,4 +15,7 @@ interface GetScryfallData {
     @GET("cards/search")
     fun getCardsByName(@Query("q", encoded=true) query: String): Deferred<ScryfallCardList>
 
+    @GET
+    fun getCardsByWholeURL(@Url url: String): Deferred<ScryfallCardList>
+
 }
