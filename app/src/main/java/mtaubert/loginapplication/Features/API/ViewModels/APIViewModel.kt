@@ -175,7 +175,7 @@ class APIViewModel(app: Application): AndroidViewModel(app) {
 
         //Cache results
         apiModel.currentSearchQuery = encodedStrings
-        apiModel.currentSearchResult.add(scryfallList)
+        apiModel.currentSearchResult.add(scryfallList) //put into the adapter for continuous list
 
         return scryfallList.data
     }

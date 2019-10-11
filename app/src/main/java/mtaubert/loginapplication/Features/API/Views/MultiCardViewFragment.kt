@@ -48,10 +48,12 @@ class MultiCardViewFragment(private var cards: List<Card>) : BaseAPIFragment(), 
         binding.tvCardTotal.text = apiViewModel.getTotalNumberOfResults().toString()
 
         binding.nextButton.setOnClickListener {
+            it.isEnabled = false
             changePage(1)
         }
 
         binding.backButton.setOnClickListener {
+            it.isEnabled = false
             changePage(-1)
         }
 
@@ -63,13 +65,15 @@ class MultiCardViewFragment(private var cards: List<Card>) : BaseAPIFragment(), 
         showCards()
 
         binding.landingButton.setOnClickListener {
-            (activity as APIActivity).changeFragment("landing")
+            (activity as APIActivity).changeFragment("landing") //communicate with activity and change the name at the top
         }
 
         return binding.root
     }
 
     private fun showButtons() {
+        binding.nextButton.isEnabled = true
+        binding.backButton.isEnabled = true
         if(!apiViewModel.hasNextSetOfCards()) {
             binding.nextButton.visibility = View.INVISIBLE
         } else {
@@ -83,7 +87,7 @@ class MultiCardViewFragment(private var cards: List<Card>) : BaseAPIFragment(), 
         }
     }
 
-    private fun changePage(change: Int) = GlobalScope.launch {
+    private fun changePage(change: Int) = GlobalScope.launch { //data binding
         val newCards = apiViewModel.getNextPageOfResults(change)
         (activity as APIActivity).runOnUiThread {
             cards = newCards

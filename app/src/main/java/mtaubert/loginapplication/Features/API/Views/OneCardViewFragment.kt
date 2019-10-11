@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.databinding.DataBindingUtil
+import kotlinx.android.synthetic.main.login_fragment_dashboard.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import mtaubert.loginapplication.Data.Remote.Model.Card
@@ -70,7 +71,7 @@ class OneCardViewFragment(val card: Card) : BaseAPIFragment() {
     }
 
     private fun showCard(binding: ApiFragmentOneCardViewBinding) {
-        binding.nameTextview.text = card.name
+        name_display.text = card.name
         binding.cmcTextview.text = "(${card.cmc})"
         binding.typelineTextview.text = card.type_line
         binding.oracleTextTextview.text = card.oracle_text
