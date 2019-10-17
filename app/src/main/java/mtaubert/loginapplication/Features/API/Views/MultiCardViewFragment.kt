@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.api_fragment_multi_card_view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import mtaubert.loginapplication.Data.Remote.Model.Card
@@ -45,64 +46,72 @@ class MultiCardViewFragment(private var cards: List<Card>) : BaseAPIFragment(), 
             false
         )
 
-        binding.tvCardTotal.text = apiViewModel.getTotalNumberOfResults().toString()
+        return binding.root
+    }
 
-        binding.nextButton.setOnClickListener {
-            it.isEnabled = false
-            changePage(1)
-        }
+    override fun onStart() {
+        super.onStart()
 
-        binding.backButton.setOnClickListener {
-            it.isEnabled = false
-            changePage(-1)
-        }
+        tv_card_total.text = apiViewModel.getTotalNumberOfResults().toString()
 
         if(cards.isNullOrEmpty()) {
             Toast.makeText(context, "No cards found!", Toast.LENGTH_LONG).show()
         }
 
-        showButtons()
-        showCards()
-
-        binding.landingButton.setOnClickListener {
+        landing_button.setOnClickListener {
             (activity as APIActivity).changeFragment("landing") //communicate with activity and change the name at the top
         }
 
-        return binding.root
+//        showButtons()
+        showCards()
     }
 
-    private fun showButtons() {
-        binding.nextButton.isEnabled = true
-        binding.backButton.isEnabled = true
-        if(!apiViewModel.hasNextSetOfCards()) {
-            binding.nextButton.visibility = View.INVISIBLE
-        } else {
-            binding.nextButton.visibility = View.VISIBLE
-        }
+//    private fun showButtons() {
+//        next_button.isEnabled = true
+//        back_button.isEnabled = true
+//        if(!apiViewModel.hasNextSetOfCards()) {
+//            next_button.visibility = View.INVISIBLE
+//        } else {
+//            next_button.visibility = View.VISIBLE
+//        }
+//
+//        if(!apiViewModel.hasPreviousSetOfCards()) {
+//            back_button.visibility = View.INVISIBLE
+//        } else {
+//            back_button.visibility = View.VISIBLE
+//        }
+//    }
 
-        if(!apiViewModel.hasPreviousSetOfCards()) {
-            binding.backButton.visibility = View.INVISIBLE
-        } else {
-            binding.backButton.visibility = View.VISIBLE
-        }
-    }
-
-    private fun changePage(change: Int) = GlobalScope.launch { //data binding
-        val newCards = apiViewModel.getNextPageOfResults(change)
+    private fun nextPage() = GlobalScope.launch { //data binding
+//        val newCards = apiViewModel.getNextPageOfResults(change)
+//        (activity as APIActivity).runOnUiThread {
+//            cards = newCards!!
+//            showButtons()
+//            showCards()
+////            Toast.makeText(context, apiViewModel.getCurrentPage().toString(), Toast.LENGTH_LONG).show()
+//        }
+        val newCards = apiViewModel.getNextPageOfResults()
         (activity as APIActivity).runOnUiThread {
-            cards = newCards
-            showButtons()
-            showCards()
-//            Toast.makeText(context, apiViewModel.getCurrentPage().toString(), Toast.LENGTH_LONG).show()
+            if (newCards != null) {
+                addCards(newCards)
+            } else {
+                Toast.makeText(context, "End of results!", Toast.LENGTH_LONG).show()
+            }
+
         }
     }
 
     private fun showCards() {
-        val cardRecycleListView = binding.recyclerView
+        val cardRecycleListView = recyclerView
         val cardAdapter = CardListAdapter { card:Card -> viewCard(card)}
         cardRecycleListView.adapter = cardAdapter
         cardRecycleListView.layoutManager = LinearLayoutManager(context!!)
-        cardAdapter.setCards(cards)
+        cardAdapter.addCards(cards)
+        nextPage()
+    }
+
+    private fun addCards(cards:List<Card>) {
+        (recyclerView.adapter as CardListAdapter).addCards(cards)
     }
 
 

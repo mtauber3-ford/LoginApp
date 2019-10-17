@@ -1,5 +1,6 @@
 package mtaubert.loginapplication.Features.API.ViewModels
 
+import NoNetworkConnectivityException
 import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -19,15 +20,22 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import mtaubert.loginapplication.Data.DB.Model.Favorites
 import mtaubert.loginapplication.Data.Remote.Model.ScryfallCardList
-import mtaubert.loginapplication.Features.API.Models.APIModel
 import java.net.URLEncoder
 import okhttp3.OkHttpClient
 import mtaubert.loginapplication.Utils.ConnectionInterceptor
+import mtaubert.loginapplication.Utils.InvalidSearchException
+import java.net.UnknownHostException
+import kotlin.collections.ArrayList
 
 
 class APIViewModel(app: Application): AndroidViewModel(app) {
+    private var currentErrorMessage: String? = null
+    private var currentUser: User? = null
+    private var currentUserFavorites: List<Favorites>? = null
+    private var currentSearchResult: MutableList<ScryfallCardList?> = mutableListOf()
+    private var currentSearchQuery: String? = null
+    private var currentCard: Card? = null
 
-    private val apiModel = APIModel() //model for the login details
     private var db: UserRoomDatabase = UserRoomDatabase.getInstance(app) //Database used for user info
 
     private var service: GetScryfallData
@@ -50,41 +58,46 @@ class APIViewModel(app: Application): AndroidViewModel(app) {
             .create(GetScryfallData::class.java)
     }
 
-
-
     /**
      * CARD SEARCHES
      */
     fun clearSearchCache()
     {
-        apiModel.currentCard = null
-        apiModel.currentSearchResult.clear()
-        apiModel.currentSearchQuery = null
+        currentCard = null
+        currentSearchResult.clear()
+        currentSearchQuery = null
         currentPage = 0
     }
 
+    fun getCurrentErrorMessage(): String {
+        if (currentErrorMessage != null) {
+            return currentErrorMessage!!
+        }
+        return "Error occured getting results"
+    }
+
     fun getCurrentCard(): Card? {
-        return apiModel.currentCard
+        return currentCard
     }
 
     fun setCurrentCard(card:Card) {
-        apiModel.currentCard = card
+        currentCard = card
     }
 
     fun getCurrentSearch(): ScryfallCardList? {
-        if(apiModel.currentSearchResult.size > 0){
-            return apiModel.currentSearchResult[currentPage]
+        if(currentSearchResult.size > 0){
+            return currentSearchResult[currentPage]
         } else {
             return null
         }
     }
 
     fun getLastSearchQuery(): String? {
-        return apiModel.currentSearchQuery
+        return currentSearchQuery
     }
 
     fun hasNextSetOfCards(): Boolean {
-        return apiModel.currentSearchResult[currentPage]!!.has_more
+        return currentSearchResult[currentPage]!!.has_more
     }
 
     fun hasPreviousSetOfCards(): Boolean {
@@ -92,35 +105,60 @@ class APIViewModel(app: Application): AndroidViewModel(app) {
     }
 
     fun getTotalNumberOfResults(): Int {
-        return apiModel.currentSearchResult[currentPage]!!.total_cards
+        return currentSearchResult[currentPage]!!.total_cards
     }
 
     fun getCurrentPage(): Int {
         return currentPage
     }
 
-    suspend fun getNextPageOfResults(change: Int): List<Card> {
-        val nextPage = currentPage + change
-        if(apiModel.currentSearchResult.size <= nextPage) {
-            val scryfallList = service.getCardsByWholeURL(apiModel.currentSearchResult[currentPage]!!.next_page).await()
-
-            //Cache results
-            apiModel.currentSearchResult.add(scryfallList)
-            currentPage = nextPage
-
-            return scryfallList.data
-        } else {
-            currentPage = nextPage
-            return apiModel.currentSearchResult[nextPage]!!.data
+    private suspend fun makeScryfallAPICall(type: String, query: String?): List<Card>? {
+        return try {
+            when(type) {
+                "random" -> {
+                    currentCard = service.getRandomCard().await()
+                    listOf(currentCard!!)
+                }
+                "userQuery" -> {
+                    val scryfallList = service.getCardsByName(query!!).await()
+                    currentSearchResult.add(scryfallList) //put into the adapter for continuous list
+                    scryfallList.data
+                }
+                "url" -> {
+                    val scryfallList = service.getCardsByWholeURL(query!!).await()
+                    currentSearchResult.add(scryfallList)
+                    scryfallList.data
+                }
+                else -> listOf()
+            }
+        } catch (e: Exception) {
+            currentErrorMessage = e.message
+            when (e) {
+                is NoNetworkConnectivityException -> null
+                is UnknownHostException -> null
+                is InvalidSearchException -> listOf()
+                else -> null
+            }
         }
     }
 
-    suspend fun getRandomCard(): Card{
-        apiModel.currentCard = service.getRandomCard().await()
-        return apiModel.currentCard!!
+    suspend fun getNextPageOfResults(): List<Card>? {
+        if(currentSearchResult[currentPage]!!.has_more) {
+            val query = currentSearchResult[currentPage]!!.next_page
+            currentPage++
+            return makeScryfallAPICall("url", query)
+        } else {
+            return null
+        }
     }
 
-    suspend fun searchForCards(searchString: String, searchType: String, colorSelection: Array<Boolean>, colorSearchType: Int, formatSearch: Int): List<Card> {
+    suspend fun getRandomCard(): List<Card>?{
+        clearSearchCache()
+        return makeScryfallAPICall("random", null)
+
+    }
+
+    suspend fun searchForCards(searchString: String, searchType: String, colorSelection: Array<Boolean>, colorSearchType: Int, formatSearch: Int): List<Card>? {
         var encodedStrings = ""
         if(searchString.isNotEmpty() && searchString.isNotBlank()) {
             encodedStrings += URLEncoder.encode(searchString, "UTF-8")
@@ -171,16 +209,13 @@ class APIViewModel(app: Application): AndroidViewModel(app) {
         }
 
         Log.e("SEARCH STRING", encodedStrings)
-        val scryfallList = service.getCardsByName(encodedStrings).await()
 
-        //Cache results
-        apiModel.currentSearchQuery = encodedStrings
-        apiModel.currentSearchResult.add(scryfallList) //put into the adapter for continuous list
-
-        return scryfallList.data
+        clearSearchCache()
+        currentSearchQuery = encodedStrings
+        return makeScryfallAPICall("userQuery", encodedStrings)
     }
 
-    fun getCardImage(card: Card, imageView: ImageView) {
+    fun getCardImage(card: Card, imageView: ImageView) = GlobalScope.launch {
         DownloadCardImage(imageView).execute(card.image_uris.normal)
     }
 
@@ -191,16 +226,16 @@ class APIViewModel(app: Application): AndroidViewModel(app) {
      * Returns the current logged in user
      */
     fun getCurrentUser(): User? {
-        return apiModel.currentUser
+        return currentUser
     }
 
     /**
      * sets the current User
      */
-    fun setCurrentUser(currentUser: User) {
-        apiModel.currentUser = currentUser
+    fun setCurrentUser(user: User) {
+        currentUser = user
         GlobalScope.launch {
-            apiModel.currentUserFavorites =  db.favDao().getUserFavorites(getCurrentUser()!!.email)
+            currentUserFavorites =  db.favDao().getUserFavorites(getCurrentUser()!!.email)
         }
     }
 
@@ -209,24 +244,27 @@ class APIViewModel(app: Application): AndroidViewModel(app) {
      */
     fun getUserFavorites(): List<Card>? {
         val favoriteCardsList: ArrayList<Card> = ArrayList()
-        if(!apiModel.currentUserFavorites.isNullOrEmpty()) {
-            for(fav:Favorites in apiModel.currentUserFavorites!!) {
+        if(!currentUserFavorites.isNullOrEmpty()) {
+            for(fav:Favorites in currentUserFavorites!!) {
                 favoriteCardsList.add(gson.fromJson(fav.cardJson, Card::class.java))
             }
         }
-        currentPage = 0
-        apiModel.currentSearchResult.clear()
-        apiModel.currentSearchResult.add(ScryfallCardList(favoriteCardsList.size, false, "", favoriteCardsList))
+        clearSearchCache()
+        currentSearchResult.add(ScryfallCardList(favoriteCardsList.size, false, "", favoriteCardsList))
         return favoriteCardsList
     }
 
     fun isCurrentCardAFavorite():Boolean {
-        for(fav:Favorites in apiModel.currentUserFavorites!!) {
-            if(apiModel.currentCard!!.id == fav.favCardId) {
+        for(fav:Favorites in currentUserFavorites!!) {
+            if(currentCard!!.id == fav.favCardId) {
                 return true
             }
         }
         return false
+    }
+
+    fun getManaCost() {
+
     }
 
     suspend fun favoriteCurrentCard(){
@@ -236,14 +274,14 @@ class APIViewModel(app: Application): AndroidViewModel(app) {
             val newFavorite = Favorites(0, getCurrentUser()!!.email, getCurrentCard()!!.id, gson.toJson(getCurrentCard()!!))
             db.favDao().insert(newFavorite)
         }
-        apiModel.currentUserFavorites =  db.favDao().getUserFavorites(getCurrentUser()!!.email)
+        currentUserFavorites =  db.favDao().getUserFavorites(getCurrentUser()!!.email)
     }
 
     suspend fun clearAllFavorites() {
         for(fav:Favorites in db.favDao().getUserFavorites(getCurrentUser()!!.email)) {
             db.favDao().deleteFavorite(fav.userEmail, fav.favCardId)
         }
-        apiModel.currentUserFavorites =  db.favDao().getUserFavorites(getCurrentUser()!!.email)
+        currentUserFavorites =  db.favDao().getUserFavorites(getCurrentUser()!!.email)
     }
 
     private inner class DownloadCardImage(internal var imageView: ImageView) :

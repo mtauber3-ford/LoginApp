@@ -16,7 +16,7 @@ import mtaubert.loginapplication.databinding.ApiFragmentOneCardViewBinding
 
 class CardListAdapter(val cardClickListner: (Card) -> Unit) : RecyclerView.Adapter<CardListAdapter.CardViewHolder>() {
 
-    private var cardList = emptyList<Card>() //List of current cards
+    private var cardList = mutableListOf<Card>() //List of current cards
 
     /**
      * UserViewHolder
@@ -61,8 +61,10 @@ class CardListAdapter(val cardClickListner: (Card) -> Unit) : RecyclerView.Adapt
         holder.tvCMC.text = current.cmc.toString()
         holder.tvType.text = current.type_line
         var colorIdentity = ""
-        for(color in current.color_identity) {
-            colorIdentity += color
+        if (current.color_identity != null) {
+            for (color in current.color_identity) {
+                colorIdentity += color
+            }
         }
         holder.tvNumber.text = colorIdentity
         holder.costLayout.removeAllViews()
@@ -142,7 +144,12 @@ class CardListAdapter(val cardClickListner: (Card) -> Unit) : RecyclerView.Adapt
      * Sets the list of users
      */
     internal fun setCards(cards: List<Card>) {
-        this.cardList = cards
+        this.cardList.addAll(cards)
+        notifyDataSetChanged()
+    }
+
+    internal fun addCards(cards: List<Card>) {
+        this.cardList.addAll(cards)
         notifyDataSetChanged()
     }
 }

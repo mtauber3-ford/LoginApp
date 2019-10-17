@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.databinding.DataBindingUtil
+import kotlinx.android.synthetic.main.api_fragment_one_card_view.*
 import kotlinx.android.synthetic.main.login_fragment_dashboard.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -43,49 +44,52 @@ class OneCardViewFragment(val card: Card) : BaseAPIFragment() {
 
         favorite = apiViewModel.isCurrentCardAFavorite()
 
-        if(favorite) {
-            binding.imageButton.setImageResource(R.drawable.heart_2)
-        }
-
-        binding.backToLandingButton.setOnClickListener {
-            (activity as APIActivity).contextualBackButtonPressed()
-        }
-
-        binding.imageButton.setOnClickListener {
-            GlobalScope.launch { apiViewModel.favoriteCurrentCard() }
-            setHeartIcon(binding)
-        }
-
-        showCard(binding)
-
         return binding.root
     }
 
-    private fun setHeartIcon(binding: ApiFragmentOneCardViewBinding) {
+    override fun onStart() {
         if(favorite) {
-            binding.imageButton.setImageResource(R.drawable.heart)
+            imageButton.setImageResource(R.drawable.heart_2)
+        }
+
+        back_to_landing_button.setOnClickListener {
+            (activity as APIActivity).contextualBackButtonPressed()
+        }
+
+        super.onStart()
+        imageButton.setOnClickListener {
+            GlobalScope.launch { apiViewModel.favoriteCurrentCard() }
+            setHeartIcon()
+        }
+
+        showCard()
+    }
+
+    private fun setHeartIcon() {
+        if(favorite) {
+            imageButton.setImageResource(R.drawable.heart)
         } else {
-            binding.imageButton.setImageResource(R.drawable.heart_2)
+            imageButton.setImageResource(R.drawable.heart_2)
         }
         favorite = !favorite
     }
 
-    private fun showCard(binding: ApiFragmentOneCardViewBinding) {
-        name_display.text = card.name
-        binding.cmcTextview.text = "(${card.cmc})"
-        binding.typelineTextview.text = card.type_line
-        binding.oracleTextTextview.text = card.oracle_text
-        apiViewModel.getCardImage(card, binding.imageView)
+    private fun showCard() {
+        name_textview.text = card.name
+        cmc_textview.text = "(${card.cmc})"
+        typeline_textview.text = card.type_line
+        oracle_text_textview.text = card.oracle_text
+        apiViewModel.getCardImage(card, imageView)
 
         //binding.manaCostDisplay.renderManaCost(card.mana_cost)
-        renderManaCost(binding)
+        renderManaCost()
     }
 
-    private fun renderManaCost(binding: ApiFragmentOneCardViewBinding) {
+    private fun renderManaCost() {
         var manaCost = card.mana_cost
         while(manaCost.isNotEmpty()) {
             val newSymbol = ImageView(context)
-            binding.manaSymbolLayout.addView(newSymbol)
+            manaSymbolLayout.addView(newSymbol)
             newSymbol.layoutParams.height = 64
             newSymbol.layoutParams.width = 64
             newSymbol.scaleType = ImageView.ScaleType.FIT_CENTER
