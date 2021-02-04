@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="wrap_content"
+                                                   android:background="?attr/backgroundColor">
+
+    <TextView
+            android:id="@+id/email_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Email" android:textColor="@color/textNormal"/>
+
+    <TextView
+            android:id="@+id/password_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@+id/email_text"
+            app:layout_constraintTop_toBottomOf="@+id/email_text"
+            tools:text="password" android:textColor="@color/textNormal"/>
+
+    <TextView
+            android:id="@+id/name_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/password_text"
+            app:layout_constraintTop_toBottomOf="@+id/password_text"
+            tools:text="name" android:textColor="@color/textNormal"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

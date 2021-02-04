@@ -1,0 +1,75 @@
+<resources>
+    <!--    Login Activity-->
+    <string name="app_name">Login Application</string>
+    <string name="login">Login</string>
+    <string name="logout">Logout</string>
+    <string name="name">Name</string>
+    <string name="username">E-Mail</string>
+    <string name="password">Password</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="save_details">Save Details</string>
+    <string name="sign_up_name">Enter your first name</string>
+    <string name="sign_up_email">Enter your email</string>
+    <string name="sign_up_password">Enter your password</string>
+    <string name="delete">Delete</string>
+    <string name="admin">Admin</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="welcome_message">Welcome back </string>
+    <string name="account_details">View Account Details</string>
+    <string name="api_activity">Search with Scryfall</string>
+    <string name="TBA">TBA</string>
+    <string name="dark_mode">Dark Mode</string>
+
+    <!--    API Activity-->
+    <string name="scryfall_welcome">Welcome the MTG card search.\nUses the Scryfall API to search</string>
+    <string name="back_to_main">Return to main menu</string>
+    <string name="back_to_landing">Return to Scryfall landing</string>
+    <string name="random_card">Random Card</string>
+    <string name="search_hint">Enter your search string</string>
+    <string name="card_type">Card type</string>
+    <string-array name="card_types_array">
+        <item>Any</item>
+        <item>Artifact</item>
+        <item>Conspiracy</item>
+        <item>Creature</item>
+        <item>Emblem</item>
+        <item>Enchantment</item>
+        <item>Hero</item>
+        <item>Instant</item>
+        <item>Land</item>
+        <item>Phenomenon</item>
+        <item>Plane</item>
+        <item>Planeswalker</item>
+        <item>Scheme</item>
+        <item>Sorcery</item>
+        <item>Tribal</item>
+        <item>Vanguard</item>
+    </string-array>
+    <string name="color">Colors</string>
+    <string name="color_search_option">Color search option</string>
+    <string-array name="color_search_options">
+        <item>Exactly these colors</item>
+        <item>Including these colors</item>
+        <item>At most these colors</item>
+    </string-array>
+    <string name="favorites">Favorites</string>
+    <string name="format">Format</string>
+    <string-array name="format_array">
+        <item>Any</item>
+        <item>Standard</item>
+        <item>Future</item>
+        <item>Modern</item>
+        <item>Legacy</item>
+        <item>Pauper</item>
+        <item>Vintage</item>
+        <item>Penny</item>
+        <item>Commander</item>
+        <item>Brawl</item>
+        <item>Duel</item>
+        <item>Old School</item>
+    </string-array>
+
+
+
+
+</resources>
